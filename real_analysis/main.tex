@@ -1,0 +1,2169 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath, amssymb, amsfonts, amsthm} % Required for some math elements
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+% Custom examlpe command
+\newtheorem{example}{Example}[subsection]
+\newtheorem{definition}{Definition}[subsection]
+\newtheorem{remark}{Remark}[subsection]
+\newtheorem{axiom}{Axiom}[section]
+\newtheorem{proposition}{Proposition}[subsection]
+\newtheorem{lemma}{Lemma}[subsection]
+\newtheorem{theorem}{Theorem}[subsection]
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\exercisesline}{	%Exercises line
+    \begin{center}
+    \textemdash\ Exercises\ \textemdash
+    \end{center}
+}
+\newcommand{\mem}{\text{\textemdash}} % Math mode emdash
+\newcommand{\vep}{\varepsilon} % Epsilon
+
+% Special \pp operator for peano axioms
+\newcommand{\pp}{\mathbin{+\mkern-5mu+}}
+
+\let\bf\textbf
+\let\it\textit
+\let\tc\texttt
+
+\title{Real Analysis Notes}
+\author{Luke Bailey}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent Notes from textbook \textit{Analysis I} by Terence Tao.
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+Real analysis is the study of real numbers. We will answer 
+questions such as: What is a real number? How
+do you take the limit of a squenece of real numbers? 
+What is a continuous function? What is a derivative?
+
+Analysis is important to study for both the 
+satisfaction of knowing ``how'' real numbers work,
+and to avoid falling into traps of false reasoning.
+Consider: 
+
+\begin{example}
+	Consider $\lim_{x \to \infty} \sin(x)$. Make the 
+	change of varialbe $y = x + \pi$ and recall 
+	that $\sin(y + \pi) = - \sin(y)$. Then we get: 
+	\begin{align*}
+		\lim _{x \to \infty} \sin(x) &= \lim _{y + \pi \to \infty}
+		\sin(y + \pi) 
+		= \lim_{y \to \infty} - \sin(y) = - \lim_{y \to \infty}\sin(y)
+	\end{align*}
+	Naturally, $\lim_{x \to \infty}\sin(x)= \lim_{y \to \infty}\sin(y)$. Thus 
+	we get: 
+	\begin{align*}
+		\lim_{x \to \infty}\sin(x) = - \lim_{x \to \infty}\sin(x)\\
+		\lim_{x \to \infty}\sin(x) = 0
+	\end{align*}
+\end{example}
+
+Another pitfall comes from interchanging sums. As we will see, 
+whilst you can interchance finite sums, it is not always 
+possible to interchange infinite sums. Similarly, 
+we cannot always interchacne intergrals, or limits! What a bother. 
+
+Another fun example is when the apply the famous L'Hopital's rule.
+Written generically, this is:
+$$
+\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}
+$$
+But note that we can \emph{only} apply this rule if the limit 
+of $x \to a$ of $f(x)$ and $g(x)$ are both zero. Even apart 
+from this there are circumstances where the rule does not apply.
+
+\newpage 
+
+\section{The natural numbers}
+
+We start with the natural numbers, $\mathbb{N} = \{0, 1, 2, 3, \ldots\}$.
+Note that in this work, following Tao, we include zero in the natural numbers.
+We start here because once we have $\mathbb{N}$ we can build 
+$\mathbb{Z}$ and $\mathbb{Q}$, and then $\mathbb{R}$.
+
+\subsection{The Peano axioms}
+
+This is a standard way to define the natural numbers. This is not
+the only way, and infact you can use the cardinality of sets 
+to do it also.
+
+\begin{definition}
+	(Informal) The natural numbers are any element of the set: 
+	$$
+	\N = \{0, 1, 2, 3, \ldots\}
+	$$
+	which is the set of all numbers created by starting with 0 
+	and counting forward indefinitely.
+\end{definition}
+
+This is an unsatisfactory definition, we don't know how to add
+multiply etc.
+What we can say is exponentiation is repeated multipliaction, 
+which is repeated addition, which is repeated \it{incrementing}.
+
+So do define natural numbers we will use two concepts: the zero number 
+$0$, and the increment operation, which we denote with $\pp$. From this 
+we say that $\N$ contains $0$ and everything that can be obtained 
+by incrementing $0$.
+
+\begin{axiom}
+	(Zero is a natural number) $0 \in \N$	
+\end{axiom}
+\begin{axiom}
+	If $n$ is a natural number, then $n\pp$ is also a natural number.
+\end{axiom}
+
+From this we see that $(0 \pp)\pp$ is a natural number, and so on. 
+
+\begin{definition}
+	We define $1$ to be the natural number $0\pp$, 2 to be 
+	the number $(0\pp)\pp$, etc.
+\end{definition}
+
+Note that sets of modular numbers adhere to the previous two axioms.
+We impose a third axiom to stop this.
+
+\begin{axiom}
+	0 is not the successor of any natural number.
+\end{axiom}
+
+\begin{proposition}
+	$0 != 4$
+
+	Proof. By axiom 2.1, $4 = 3\pp$. By axiom 2.3, $4 = 3\pp \neq 0$ 
+	and thus we have $0 != 4$. \hfill$\blacksquare$
+\end{proposition}
+
+We still have problems though, take a number system 
+with $1,2,3,4$ and $4\pp = 4$. This adheres to all of the axioms. 
+We add a new axiom to account for this. 
+
+\begin{axiom}
+	For $n,m \in N$ such that $n \neq m$, then 
+	$n\pp \neq m\pp$.
+\end{axiom}
+
+Finally we may have rogue elements of the number system. 
+For example \\ $1, 2,\dots, a1, a2, \dots$ where $an+1 := an\pp$. 
+We want an axiom that says the only numbers in $\N$ are those 
+that are accessible by incrementing $0$. We do so using induxtion.
+
+\begin{axiom}
+	(Principle of mathematical induction). 
+	Let $P(n)$ be a property pertaining to a natural number $n$.
+	Suppose that $P(0)$ is true, and suppose that whenever $P(n)$ 
+	is true, then $P(n\pp)$ is also true. Then $P(n)$ is true for
+	all natural numbers $n$.
+\end{axiom}
+
+Note that the above axiom only holds (in particular the last statement 
+that $P$ is true for all natural numbers) if all natrual numbers 
+are ``reachable'' from $0$ by incrementing.
+
+All of these axioms together are called the Peano axioms. We write 
+them again here for completeness:
+
+\begin{definition}
+	(Peano axioms) The natural numbers are a set $\N$ together with
+	a distinguished element $0 \in \N$ and a successor function $\pp: \N \to \N$
+	which assigns to each natural number $n \in \N$ a natural number $n\pp \in \N$,
+	such that the following axioms are satisfied:
+
+	\begin{enumerate}
+		\item (Zero is a natural number) $0 \in \N$
+		\item (Successor function is defined on all of $\N$) For every $n \in \N$, $n\pp \in \N$.
+		\item (Zero is not the successor of any natural number) For every $n \in \N$,
+		\item (Successor function is injective) If $n,m \in \N$ and $n\pp = m\pp$,
+			then $n = m$.
+			we have $n\pp \neq 0$.
+		\item (Principle of mathematical induction) Let $P(n)$ be a property 
+			pertaining to a natural number $n$. Suppose that $P(0)$ is true, and 
+			suppose that whenever $P(n)$ is true, then $P(n\pp)$ is also true. 
+			Then $P(n)$ is true for all natural numbers $n$.
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+	(Recursive definitions). Suupose for each $n \in \N$ we have 
+	a function $f_n : \N \to \N$, Let $c$ be a natural number, 
+	then we can assign a unique natural numbers $a_n$ to each $n \in \N$
+	such that $a_0 = c$ and $a_{n\pp} = f_n(a_n)$ for all $n \in \N$.
+
+
+	Proof. We proove this by induction. We note that $a_0$ is unique 
+	because $a_0 := c$, and we define $a_{n\pp} = f_n(a_n)$ for all $n \in \N$,
+	and by Axiom 2.3 $0$ is the succesor of no natural number as thus 
+	will never be redefined. Now let $a_n$ have a unique value. Consider 
+	$a_{n\pp} := f_n(a_n)$. We have $a_{n\pp}$ will be unqiue with 
+	value $f_n(a_n)$ as for all other $m \in \N$ we will have 
+	$m\pp  \neq n\pp$ because of Axiom 2.4 (that is $\pp$ is injective).
+	By induction we thus have this holds for all $a_n$.
+\end{proposition}
+
+What this says is that we can define a sequence of numbers recursively where 
+each element of the sequence is well defined (that is it takes 
+on  a unique value). Also note that we had to use all the axioms. In a 
+number system that wraps around, a recursive definition would 
+not provide unoiquness like this (which you can see trivially).
+
+\subsection{Addition of natural numbers}
+
+The idea from here is to build up more complex operations from increment.
+
+\begin{definition}
+	Let $m$ be a natural number. We define $0 + m := m$. Assume 
+	that we have defined how to add $n$ and $m$. Then we 
+	define $(n\pp) + m := (n + m)\pp$. By induction this will give 
+	us the definition of all possible sums.
+\end{definition}
+
+This is similar to our previous discussion of recursive definitions.
+In particular we have $a_n = n + m$ with $f_n(a_n) = a_n\pp$.
+
+\begin{proposition}
+	For any natural number $n$, $n + 0 = n$. 
+
+	Proof. We use induction. Consider the base case $0 + 0 = 0$ by 
+	the definition of addition. Now assume that $n + 0 = 0$. We now 
+	show that $n\pp + 0 = n\pp$. By the definition of addition we have 
+	$(n\pp) + 0 = (n + 0)\pp = n\pp$. \hfill $\blacksquare$
+\end{proposition}
+
+
+We now rattle off a few propoositions (mostly) without proof. In general they 
+require using the above proposition, and the fact that 
+$n + m\pp = (n + m)\pp$ (i.e., the symetric versions of the
+properties given in the definition of additon) and induction
+to prove.
+
+\begin{proposition}
+	(Various things about addition). For $a,b,c,d \in \N$ we claim
+	(mostly) without proof:
+
+	\begin{enumerate}
+		\item  (commutative) $a + b = a +b$
+		\item (associative) $(a + b) + c = a + (b + c)$
+		\item (cancellation)  If $a + b = a + c$, then $b = c$.
+	\end{enumerate}
+
+	Proof of cancellation. As before we prove by induction on $a$. 
+	Let $b$ and $c$ be arbitrary. Let $a = 0$. In this 
+	case we have $0 + b = 0 + c \implies b =c $ by Proposition 
+	2.3. Now assume that $a + b = a + c \implies b = c$ for 
+	some other $a$. We now show the same holds for $a\pp$. 
+	Let $(a\pp) + b = (a\pp) + c$. By the definition of addition
+	we thus have $(a + b)\pp = (b +c)\pp$. As $\pp$ is injective 
+	we must have $a + b = a + c$ and thus $b = c$. By induction,
+	we complete the proof.
+	\hfill $\blacksquare$
+\end{proposition}
+
+\begin{definition}
+	(Positive natural numbers). $n \in \N$ is positive iff 
+	it is not equal to 0.
+\end{definition}
+
+It quickly foloows that if $a$ is positive and $b$ is a natural 
+number then $a +b$ is positive. We can prove this simply using
+induction and the fact that $0$ is not the successor of any 
+natural number (by Axiom of 2.3). A corollary of this is that 
+if $a+b=0$, then $a=b=0$, else we would have a contradiction 
+with the previous statement.
+
+\begin{lemma}
+	For $a\in\N$ that is positive there exists exactly one $b\in\N$ 
+	such that $a = b\pp$. I.e. a is the successor of only 
+	one natural number.
+\end{lemma}
+
+Having defined addition, we can now define a notion of 
+order of the natural numebrs in terms of addition.
+
+\begin{definition}
+	(Ordering of natural numbers).	
+	For $n,m \in \N$ we say that $n$ is less than or equal to $m$,
+	written as $n \leq m$, iff there exists a natural number $a$ such that
+	$n + a = m$. We say that $n$ is less than $m$, written as $n < m$,
+	if $n \leq m$ and $n \neq m$.
+\end{definition}
+
+\begin{proposition}
+	(Various properties of order). For $a,b,c \in \N$ we have:	
+
+	\begin{enumerate}
+		\item (Order is reflexive) $a \leq a$.	
+		\item (Order is transitive) If $a \leq b$ and $b \leq c$, then $a \leq c$.
+		\item (Order is anti-symmetric) If $a \leq b$ and $b \leq a$, then $a = b$.
+		\item (Addition preserves order) If $a \leq b$, then $a + c \leq b + c$.
+		\item $a < b$ iff $a\pp \leq b$.
+		\item $a < b$ iff $b=a+d$ for some positive number $d$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+	(Trichotomy of order). For any $a,b \in \N$ exactly one of the following 
+	three statements is true: $a < b$, $a = b$, or $a > b$.	
+\end{proposition}
+
+Order allows us to create a \emph{stronger} principle of induction 
+on the natural numbers.
+
+\begin{proposition}
+	(Strong principle of induction). Let $m_0$ be some natural 
+	number, and let $P(m)$ be a property pertaining to an arbitrary
+	natural number $m$. Suppose that for each $m > m_0$ we have 
+	the following implication: if $P(m')$ is true for 
+	all $m_0 \leq m' < m$, then $P(m)$ is also true. Then 
+	we can conclude that $P(m$ is trual for all natural numbers $m \geq m_0$.
+\end{proposition}
+
+So what is this principle saying? Essentially, if $P$ is 
+true for all $n \in [m_0, m)$ implies that $P(m)$ is true, then 
+$P$ is true for all $n \geq m_0$. This is just like normal induction,
+except in normal induction we have: 
+$$
+[P(0) \land P(n) \implies P(n\pp)] \implies P(n) \text{ is true for all } n \in \N
+$$
+Now we have: 
+\begin{align*}
+[P(m_0) \land P(m') \text{ is true for all } m_0 \leq m' < m \implies P(m)] 
+\implies \\
+P(n) \text{ is true for all } n \geq m_0
+\end{align*}
+
+We tend to normally use this with $m_0 = 0$ or $m_0 = 1$.
+
+
+\exercisesline
+
+\emph{Exercise 2.2.6}. Let $n$ be a natural number, and let $P(m)$ 
+be a property pertaining to the natural numbers such that whenever
+$P(m\pp)$ is true, then $P(m)$ is true. Suppose that $P(n)$ is true.
+Prove that $P(m)$ is true for all natural numbers $m \leq n$.
+This is known as the principle of backwards induction. (Hint: apply 
+induction to the variable $n$).
+
+\emph{Proof.} We induct on $n$. Consider the base case $n = 0$. In this 
+case we know that $P(0)$ is true. There is no $m\in\N$ such that $m <0$, 
+as this would imply that $0$ is the successor of some natural number,
+which breaks one of the Peano axioms. Thus $P(m)$ is true for all
+natural numbers $m \leq 0$. 
+
+Now assume the claim is true for some $n$. We now show that it 
+is also true for $n\pp$. We suppose that $P(n\pp)$ is true. As
+everty natual number has a single successor, then $n$ is the single
+predecessor of $n\pp$. By the induction hypothesis, $P(m)$ is true
+for all $m \leq n$. As $P(n\pp$ is true by assumption, then $P(m)$
+is true for all $m \leq n\pp$. By induction, the claim is true for
+all $n \in \N$. \hfill $\blacksquare$
+
+\subsection{Multiplication of natural numbers}
+
+From here out we assume we can use all the properties of addition that 
+we know without proof. We now move to multiplication, which is simply 
+the iterated additation operation, in much the same way that addition
+is simply iterated incrementation.
+
+\begin{definition}
+	Consider $m\in\N$. We define $0 \times m := 0$. Suppose 
+	inductively that we have defined how to multiple $n$ and $m$. 
+	Then we can multiple $n++$ to $m$ by defining $(n\pp)
+	\times m := (n \times m) + m$. By induction this will give us
+	the definition of all possible products.
+\end{definition}
+
+As before we can go ahead and prove lots of lemmas. Such as 
+the distributive law which states that $a(b+c) = ab + ac$, 
+commutativity, associativity, etc. Some useful ones are shown 
+below.
+
+\begin{proposition}
+	(Useful facts about multiplication). We have:	
+
+	\begin{enumerate}
+		\item (Multiplcation preserves order). If $a,b \in N$ such  
+		that $a < b$ and $c$ is positive, then $ac < bc$.
+		\item (Cancellation). If $a,b,c \in \N$ and $a \neq 0$ such that
+		$ab = ac$, then $b = c$.
+	\end{enumerate}
+\end{proposition}
+
+Now here comes a big one! Very useful. 
+
+\begin{proposition}
+	(Euclidean algorithm). Let $n\in\N$ and $q$ be positive. Then there 
+	exists natural numbers $m$, $r$ such that $0 \leq r < q$ and $n = mq + r$.
+\end{proposition}
+
+\begin{remark}
+	In other words, we can divide a natural number $n$ by 
+	a positive number $q$ to obtain a quotient $m$ and a remainder $r$.
+	This was the beginning of \emph{number theory}.
+\end{remark}
+
+Going deeper, we can now define exponentiation in terms of multiplicaiton.
+
+\begin{definition}
+	(Exponentiation). We define $m^0 := 1$ for all $n \in \N$. Suppose	
+	we for $n$ and $m$ we have defined $m^n$. Then we define 
+	$m^{n\pp} := m^n \times m$. By induction this will give us the
+	definition of all possible exponentiations.
+\end{definition}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 3		%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Set Theory}
+
+Here we introduce some of the core aspects of axiomatic set theory, 
+which almost every other branch of mathematics relies on. We leave 
+discussion of more advanced topics, such as infinite sets, and 
+the axiom of choice, to Chapter 8.
+
+\subsection{Fundamentals}
+
+Just like the natural numbers, we build what a set is using axioms. We start,
+however, with an informal definition.
+
+\begin{definition}
+	(Sets, informal). We define a set A to be an unordered 
+	colection of objects. If $x$ is an object, we say that $x$
+	is an element of $A$, and write $x \in A$, if $x$ belongs to
+	$A$. If $x$ is not an element of $A$, we write $x \notin A$.
+\end{definition}
+
+This definition is intuitive, but doesn't let us do things like 
+set operations, or say what collections of objects are sets and what 
+aren't. 
+
+\begin{axiom}
+	(Sets are objects). If A is a set, then A is also an object. Thus 
+	given two sets, we can ask is one an element of the other.
+\end{axiom}
+
+\begin{remark}
+	There is a special case of set theory called ``pure'' set
+	theory in which \it{all} objects are sets. E.g. $0$ 
+	is the empty set, and 1 is $\{0\} = \{ \emptyset \}$ and 
+	so forth. From a logical point of view, pure set theory 
+	is simpler as we only have to deal with one type of object. 
+	From  a conceptual point of view, it is easier to deal 
+	with impure set theory, as we are doing here.
+\end{remark}
+
+For us, of all the objects in maths, some are sets, and some are not. If
+$x$ is an object and $A$ a set then $x \in A$ is true or false. 
+If $A$ is not a set, then $x \in A$ is undefined. E.g., $3\in 4$ 
+is niether true nor false, but meaningless.
+
+\begin{definition}
+	(Equality of sets). Two sets $A$ and $B$ are equal iff every 
+	element of $A$ is in $B$ and vice versa.
+\end{definition}
+
+We informally introduce the axiom of substitution. This states 
+that if two sets are equal, then we can replace one by the other 
+in any expression, and the result will be unchanged. Note  that 
+$\in$ respects this axiom, as if $x \in A$ and $A=B$ then $x \in B$. 
+Thus if we build all set operations from $\in$, they too will obey 
+the axiom. Futher note, however, that we do not care about the 
+order of sets, so operations such as ``the first in'' and ``the last in''
+\it{would not} obey the axiom of substitution.
+
+We now define what objects are sets in a similar way to defining the natural 
+numbers (where we started with $0$ and built up numbers from there).
+
+\begin{axiom}
+	(Empty set). There exists a set $\emptyset$, known as the empty 
+	set, which contains no elements. That is $\forall x, x \not \in \emptyset$.
+\end{axiom}
+
+\begin{lemma}
+	(Single choice). If $A$ is a non-empty set, then there exists 
+	an object $x \in A$. 
+
+	Proof. Assume towards contradiction this is not true. Then 
+	$\forall x, x \not \in A$, thus $A = \emptyset$ which is a 
+	contradiction.
+\end{lemma}
+
+This lemma is trivial, but says something fairly profound. We can 
+always pick an elemnt from a non-empty set. Going further, given 
+a finite set of non-empty sets, we can choose an element from each, 
+known as ``finite choice.'' The extension of this to infinite sets 
+reqiures another axiom, the \it{axiom of choice}, whic we discuss 
+in Section 8.
+
+\begin{axiom}
+	(Singleton and pair sets). For every object $a$ there is 
+	a singleton set $\{a\}$ whose only element is $a$, and for
+	every pair of objects $a,b$ there is a pair set $\{a,b\}$
+	whose only elements are $a$ and $b$.
+\end{axiom}
+
+Note that the singeton set axiom is redundent as it follows from 
+the pair set axiom, as that gives us there exists sets 
+$\{a,a\}$ which by our definition of set equivalence, is the same 
+as $\{a\}$. The next axiom allows us to build bigger sets (and the 
+it + the singleton axiom also gives us the pair set axiom).
+
+\begin{axiom}
+	(Pairwaise union). Given sets $A,B$, there exists a set 
+	$A \cup B$ whose elements consist of all the elements 
+	belonging to $A$ or $B$ or both. That is: 
+	$$
+	x \in A \cup B \iff (x \in A \lor x \in B)
+	$$
+\end{axiom}
+
+By usion the definition of set equality and set union, you can 
+see that $\cup$ obeys the axiom of substitution, and so is 
+well defined on sets.
+
+\begin{lemma}
+	$\cup$ is commutative and associative. That is, for all sets	
+	$A,B,C$ we have:
+	\begin{enumerate}
+		\item $A \cup B = B \cup A$
+		\item $(A \cup B) \cup C = A \cup (B \cup C)$
+	\end{enumerate}
+	We leave the proof as an exercise to the reader.
+\end{lemma}
+
+Pairwise union lets us build sets with 2 objects, 3 objects etc. 
+Note however, we cannot yes construct sets consisting of
+$n$ objects for any $n\in\N$ as we have not regierously 
+defined the concept of $n$-fold iteration. Similarly we cannot 
+create infinite sets. We will introduce axioms later that 
+allow us to do this.
+
+\begin{definition}
+	(Subsets). Given two sets $A,B$, we say that $A$ is a subset 
+	of $B$, written $A \subseteq B$, iff every element of $A$ is 
+	also an element of $B$. That is: 
+	$$
+	A \subseteq B \iff \forall x, x \in A \implies x \in B
+	$$
+	$A$ is a proper subset of $B$, written $A \subset B$, iff
+	$A \subseteq B$ and $A \neq B$.
+\end{definition}
+
+As this definition only uses $\in$ and $=$, it obeys the axiom 
+of substitution and thus is well defined.
+
+\begin{proposition}
+	(Sets are paritally ordered by set inclusion). For sets 
+	$A,B,C$, if $A \subseteq B$ and $B \subseteq C$, then
+	$A \subseteq C$. If $A \subseteq B$  and $B \subseteq A$, 
+	then $A=B$. Finally, if $A \subset B$ and $B \subset C$ 
+	then $A \subset C$.
+
+	Proof. We leave the proof as an exercise to the reader.
+\end{proposition}
+
+\begin{remark}
+	Note that sets are \it{partially} ordered by set inclusion. 
+	This is because not all pairs of sets can be related using
+	set inclusion. Thus the relation does not apply to all 
+	pairs of sets. In contrast, $<$ as defined on natural 
+	numbers is a \it{total} order, as it applies to all pairs
+	of natural numbers.
+\end{remark}
+
+\begin{axiom}
+	(Axiom of specification). Let $A$ be a set, and for each 
+	object $x$ let $P(x)$ be a property pertaining to $x$. Then 
+	there exists a set, denoted $\{x \in A : P(x) \}$, whose
+	elements are exactly the elements $x$ in $A$ for which $P(x)$
+	is true. In other words, for any object $y$:
+	$$
+	y \in \{x \in A : P(x) \} \iff (y \in A \land P(y))
+	$$
+	The axiom is also known as the axiom of separation.
+\end{axiom}
+
+As before, the axiom of specification does not break the axiom 
+of substitution, and so is well defined. This axiom can be used 
+to define other operations, such as intersections.
+
+\begin{definition}
+	(Set intersection). The intersection $S_1 \cap S_2$ we define as: 
+	$$
+	S_1 \cap S_2 := \{x \in S_1 : x \in S_2\}
+	$$
+\end{definition}
+
+\begin{definition}
+	(Set difference). We define $A - B$ or $A\setminus B$ as: 
+	$$
+	A - B := \{x \in A : x \notin B\} 
+	$$
+\end{definition}
+
+\begin{proposition}
+	(Sets form a boolean algebra). For sets $A,B,C$, all contained in $X$, 
+	we have: 
+	\begin{enumerate}
+		\item (Minimal element) $A \cup \emptyset = A$ and $A \cap 
+		\emptyset = \emptyset$.
+		\item (Maximal element) $A \cup X = X$ and $A \cap X = A$.
+		\item (Commutative laws) $A \cup B = B \cup A$ and $A \cap B = B \cap A$.
+		\item (Associative laws) $(A \cup B) \cup C = A \cup (B \cup C)$ and $(A \cap B) \cap C = A \cap (B \cap C)$.
+		\item (Distributive laws) $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ and $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.
+		\item (Partition) $A \cup (X - A) = X$ and $A \cap (X - A) = \emptyset$.
+		\item (De Morgan's laws) $X - (A \cup B) = (X - A) \cap (X - B)$ and $X - (A \cap B) = (X - A) \cup (X - B)$.
+	\end{enumerate}
+	These all follow fairly simply.
+\end{proposition}
+
+
+\begin{axiom}
+	(Replacement). Let $A$ be a set. For any object $x \in A$, and 
+	any object $y$, suppose we have a statement 
+	$P(x,y)$ pertaining to $x$ and $y$, such that for each 
+	$x \in A$, there is at most one $y$ for which $P(x,y)$ is true.
+	Then there exists a set $\{y : P(x,y) \text{ is true for some } x \in A\}$, 
+	such that for any object $z$:
+	$$
+	z \in \{y : P(x,y) \text{ is true for some } x \in A\} \iff P(x,z) \text{ is true for some } x \in A
+	$$
+\end{axiom}
+
+\begin{example}
+	Let $A := \{3,5,9\}$ and let $P(x,y)$ be $y = x\pp$. For every $x\in A$ 
+	there is only one $y$ for which $P(x,y)$ is true as every number 
+	has only 1 successor. The above axiom says the the replacement exists,
+	and is the following set: $\{4,6,10\}$.
+\end{example}
+
+Using function notation, the axiom can be used to construct sets of the form: 
+$$
+\{y : y = f(x) \text{for some} x \in A\}
+$$
+Here we are using the fact that a function maps an element to a single 
+element (something we will define in more detail later, so really 
+using functions here is a bit circular). Note that that is the 
+key feature of $P(x,y)$ in the axiom, $x$ is mapped to at most 1 $y$.
+There is a subtle difference here though, we can have no such $y$ 
+that satisfies $P(x,y)$ which doesn't quite mesh with our function 
+definition.
+We will more commonly write set constructions like this as:
+$$
+\{ f(x) : x \in A\}
+$$
+The axiom of replacement can be combined with the axiom of specification 
+to create sets of the form:
+$$
+\{ f(x) : x \in A \land P(x)\}
+$$
+
+We now use sets to formalize natural numbers with our friends
+the peano axioms.
+\begin{axiom}
+	(Infiniy). There exists a set $\N$, whose elemetns are called 
+	natural numebrs, as well as an object $0$ in $\N$, and 
+	an object $n \pp$ assigned to every $n \in \N$, such that 
+	the Peano axioms hold.
+\end{axiom}
+This is the formal construction of the natural numbers! It is 
+called the axiom of infinity because it introduces the basic example 
+of an infinite set. The axiom of infinity gives us natural numbers, 
+so gives us that numbers are objects in set theory.
+
+\exercisesline
+
+\it{Exercise 3.1.11}. Show that the axiom of replacement implies the
+axiom of specification. 
+
+\it{Proof (Informal)}. Here we do something like take a property 
+$P(x)$ and define a replacement property $Q(x,y) := x = y \land P(x)$. 
+Therefore when we apply the replacement, for any $x$ such that $P(x)$ is 
+truen, $x$ is places in the resulting set, and if $P(x)$ is not true, 
+then it is removed. Very nice!
+
+\subsection{Russell's Paradox (Optional)}
+
+We may be tempted to include the following axiom: 
+
+\begin{axiom}
+	(Universal specification). (Dangerous!) Suppose for every
+	objet $x$ we have a property $P(x)$ pertaining to $x$ that 
+	is true or false. Then there exists a set $\{x : P(x) \text{ is true}\}$
+\end{axiom}
+
+This axiom asserts that every property corresponds to a set, and thus that 
+we can make sets of all of a thing. For example the set of all blue things, 
+or the set of all sets. This axiom implies many of our previous axioms. 
+Unfortunately it leads to a \bf{paradox} known as 
+\it{Russell's Paradox}, and thus cannot be included in set theory.
+
+The paradox is as follows. Define $P(x)$ as: 
+
+$$
+P(x) \iff x \text{ is a set, and } x \notin x 
+$$
+
+So $P(\{1,2\})$ is true, but if $S$ is the set of all sets, which 
+we can construct from universal specification, then $P(S)$ is false.
+Now consider, again through universal specification: 
+
+$$
+\Omega := \{x : P(x) \} = \{x : x \text{ is a set, and } x \notin x\}
+$$
+
+Now is $\Omega \in \Omega$? If it is, then $P(\Omega)$ is false and so it 
+should not be. If it is not, then $P(\Omega)$ is true and so it should be. 
+This is a contradiction, and so we cannot have the axiom of universal
+specification.
+
+The problem with the axiom is that it creates sets that are too big.
+One way to resolve this is to put objects into heirarchies. At the bottom 
+are primitive objects which are not sets. One layer up there 
+are sets of primitive objects. Then above this there are sets 
+that contain primitive objects and sets of primitive objects, etc. 
+This means sets at each stage of the heirarchy can only contain 
+things from lower stages, and thus \it{a set can never contain itself}.
+Formalizing this is difficult, instead we include an axiom that means 
+we do not run into Russell's paradox.
+
+\begin{axiom}
+	(Regularity or foundation). If $A$ is a non-empty set, then
+	there is at least one element of $A$ which is either not a set, 
+	or is disjoint from $A$
+\end{axiom}
+
+This axiom implies that sets cannot contain themselves. For the purpose of 
+doing analysis, this axiom is never needed, so should be considered a side point.
+
+\exercisesline
+
+\it{Exercise 3.2.2}. Use the axiom of regularity and singleton set axiom to 
+show that if $A$ is a set, then $A \not \in A$.
+
+\it{Proof}. Assume towards contradiction $A \in A$. By the singleton 
+set  axion we can make $B := \{A\}$. Not that $B$ breaks the axiom 
+of regularity, as it has 1 element that is a set, and that one element $A$ 
+is not disjoint from $B$, as $B \cap A = A \neq \emptyset$ as $A \in A$. Thus 
+we have a contradiction, and so $A \not \in A$. \hfill $\blacksquare$
+
+
+\subsection{Functions}
+
+We start with a fareful cumbersome, but precise definition of a function.
+
+\begin{definition}
+	(Functions). Let $X,Y$ be sets, and let $P(x,y)$ be 
+	a property pertaining to an object $x \in X$ and $y \in Y$, such
+	that for every $x \in X$ there is exactly one $y \in Y$ for which 
+	$P(x,y)$ is true \footnote{This is sometimes known as the vertical
+	line test}. We define the function $f: X \to Y$ defined by $P$ 
+	on the domain $X$ with range $Y$ to be the object which, 
+	given any input $x \in X$, assings an output $f(x) \in Y$, 
+	defined to be the unique object $f(x)$ for which $P(x, f(x))$ os 
+	true. Thus, for any $x \in X$ and $y \in Y$, we have: 
+
+	$$
+	y = f(x) \iff P(x,y) \text{ is true}
+	$$
+\end{definition}
+
+Functions are also referred to as \it{maps} and \it{transformations}.
+depending on the context. They are also sometimes called 
+\it{morphisms}, although to be more precise, a morphism refers to a
+more general class of object, which may or may not be a function.
+
+There are two ways to define functions: 
+\begin{enumerate}
+	\item Explicitly. In this case say what $x$ gets mapped to, for example 
+		$f(x) = x\pp$. 
+	\item Implicitely. In this case we define a property $P(x,y)$ that 
+		links $x$ with the output of $f(x)$. When doing this we 
+		need to be careful to ensure that the property is well defined 
+		(that is there is a single $y$ for each $x$ such that 
+		$P(x,y)$ is true).
+\end{enumerate}
+
+Functions obey the axiom of substitution, that is $x = x' \implies f(x) = f(x')$,
+because the property $P(x,y)$ obeys the axiom. We define some useful 
+properties of functions: 
+
+\begin{definition}
+	(Lots of things about functions). We have: 
+	\begin{enumerate}
+	\item Equality. For $f$ and $g$ with saem domain and range, $f = g$ iff
+		$\forall x, f(x) = g(x)$.
+	\item Composition. For $f:X\to Y$ and $g:Y\to Z$, the composition 
+		$g \circ f: X \to Z$ is defined explicitely as: 
+		$$
+		(g \circ f)(x) := g(f(x))
+		$$
+		If the range of $f$ is not the domain of $g$, the operation 
+		is undefined. This obeys the axiom of substitution. Composition 
+		is associative ($f \circ (g \circ h) = (f \circ g) \circ h$).
+	\item Injective (one-to-one). A function $f:X\to Y$ is injective iff 
+		$f(x) = f(x') \implies x = x'$. Taking the contrapositive,
+		this means that $x \neq x' \implies f(x) \neq f(x')$.
+	\item Surjective (onto). A function $f:X\to Y$ is surjective iff 
+		$\forall y \in Y, \exists x \in X$ such that $f(x) = y$.
+	\item Bijective. If $f$ is surjective and injective, then it is 
+		bijective.
+	\end{enumerate}
+\end{definition}
+
+\subsection{Images and Inverse Images}
+
+\begin{definition}
+	(Images of sets). Consider $f: X \to Y$ and $S \subseteq Y$, 
+	we define $f(S)$ as
+	$$
+	f(S) := \{f(x) : x \in S\} \subseteq Y
+	$$
+	and this is called the image of $S$ under $f$. Sometimes 
+	$f(S)$ is called the forward image.
+\end{definition}
+
+Note that the image is well defined using the axiom of replacement.
+You can also define $f(S)$ using the axiom of specification (specifying 
+elements of $Y$ to include as opposed to elements of $X$ to replace).
+
+\begin{definition}
+	(Inverse image). If $U \subseteq Y$, we define $f^{-1}(U)$ to be:
+	$$
+	f^{-1}(U) := \{x \in X : f(x) \in U\} \subseteq X
+	$$
+\end{definition}
+
+We note that functions are objects, and so we should be able to consider 
+sets of \it{all} functions from a set $X$ to a set $Y$. Remember 
+from Russell's paradox that we cannot make this using the axiom 
+of universal specification, as we did not introduce this into 
+set theory (due to the paradox it creates). Therefore we introduce 
+a new axiom for this specifically. 
+
+\begin{axiom}
+	(Power set axiom). Let $X$ and $Y$ be sets. There exists a set, 
+	denoted by $Y^X$, which consists of all the functions from 
+	$X$ to $Y$, thus: 
+	$$
+	f \in Y^X \iff (f \text{ is a function with domain } X 
+	\text{ and range } Y)
+	$$
+\end{axiom}
+
+The reason we use the notation $Y^X$ is if $Y$ has $n$ elements and $X$ has 
+$m$ elements, then $Y^X$ has $n^m$ elements.
+
+\begin{lemma}
+	Let $X$ be a set. Then the following is a set 
+	$$
+	\{Y : Y \subseteq X \}.
+	$$
+	We refer to this as the pwer set of $X$, denotes by 
+	$2^X$ or $\mathcal{P}(X)$.
+\end{lemma}
+
+To construct this set, we use the Power set axiom to get $X^X$, and then
+use the axiom of specification to select all the distinct subsets of $X$, 
+as for each $A \subseteq X$, there is a function $f: X \to A$ that is 
+in $X^X$.
+
+Finally we enhance the axiom of pairwise union to create much larger sets.
+
+\begin{axiom}
+	(Union). Let $A$ be a set, all of whose elements are sets themselves.
+	Then there exists a set $\bigcup A$ whose elements 
+	are precisely those objects that are elements of the elements of A, thus 
+	for all objects $x$ we have: 
+	$$
+	x \in \bigcup A \iff \exists B \in A, x \in B
+	$$
+\end{axiom}
+
+The axiom of union with the axiom of pair set, implies the axiom of pairwise
+union. Another important consequence is if we hvae an set $I$, and for 
+all $\alpha \in I$ we have some $A_\alpha$, then we can form the union 
+set $\bigcup_{\alpha \in I} A_\alpha$ by defining: 
+$$
+\bigcup_{\alpha \in I} A_\alpha := \bigcup \{A_\alpha : \alpha \in I\}
+$$
+where $\{ A_\alpha : \alpha \in I\}$ is a set by the axiom of replacement. 
+We often call such an $I$ an indexing set. We can also form intersections 
+like this as: 
+$$
+\bigcap_{\alpha \in I} A_\alpha := \{x \in A_\beta : x\in A_\alpha \forall \alpha \in I\}
+$$
+where $I$ here is non-empty and $\beta \in I$ is arbitrary. Note this 
+is a set by the axiom of specification (we are simply specifying what 
+elements of $A_\beta$ to include).
+
+The axioms of set theory that we have introduced here, excluding the 
+dangerous axiom of universal specification, are known as the
+\it{Zermelo-Fraenkel axioms of set theory}. The axioms of
+There is one further axiom, the \it{axiom of choice}, which 
+gives rise to the \it{Zermelo-Fraenkel-Choice axioms of set theory},
+but we won't need it until much later. We recap the axioms now: 
+
+\begin{definition}
+	(Zermelo-Fraenkel axioms of set theory). We have:	
+	\begin{enumerate}
+		\item (Empty set). There exists a set $\emptyset$.
+		\item (Set equality). Two sets are equal iff they have the same elements.
+		\item (Pair set). For any $a,b$ there exists a set $\{a,b\}$.
+		\item (Union). For any set $A$ there exists a set $\bigcup A$.
+		\item (Power set). For any sets $X$ and $Y$ there exists a set $Y^X$.
+		\item (Axiom of specification). For any set $A$ and property $P(x)$, 
+			there exists a set $\{x \in A : P(x)\}$.
+		\item (Replacement). For any set $A$ and property $P(x,y)$, 
+			there exists a set $\{y : P(x,y) \text{ is true for some } x \in A\}$.
+		\item (Infinity). There exists a set $\N$.
+		\item (Regularity). If $A$ is a non-empty set, then there is 
+			at least one element of $A$ which is either not a set, 
+			or is disjoint from $A$.	
+	\end{enumerate}
+\end{definition}
+
+NOTE: \it{Technically} Zermelo-Fraenkel set theory is a form of pure set 
+theory, which changes some things. Most notably the axiom of infinity 
+does not use the natural numbers (as in pure set thoery, there 
+are only sets), and instead creates an infinite set of sets that 
+escalate up the heirarchy we described earlier. The minimal set
+that satisfies this axiom, known as the \it{von Neumann ordinal}, is
+equivalent to the natural numbers. For our purposes, we study 
+non-pure set theory, so we define things slightly differently. Additionally, 
+the Power set axiom refers to $2^X$ not $Y^X$. Finally,
+Zermelo-Fraekel set theory only has 2-9 of the above axioms 
+(with some changes like the afformentioned one), and the axiom of
+the empty set arrises from the axiom of infinity. 
+
+
+\subsection{Certesian Products}
+
+This is another fundamental operation on sets. 
+
+\begin{definition}
+	(Ordered pairs). If $x$ and $y$ are any object, we define the 
+	ordered pair $(x,y)$ to be a new object, consisting of $x$ 
+	as its first component and $y$ as its second component. Two 
+	ordered pairs $(x,y)$ and $(x',y')$ are equal iff $x=x'$ and $y=y'$.
+\end{definition}
+
+Technically this is partly an axiom, because we have postulated that given any 
+two objects $x$ and $y$, the object $(x,y)$ exists. It is, howeer, 
+possible to define an ordered pair using the axioms of set theory in such 
+a way that we do not need any further axioms (see Exercise 3.5.1). 
+
+\begin{definition}
+	If $X$ and $Y$ are sets, then the cartesian product
+	$X \times Y$ is defined as: 
+	$$
+	X \times Y = \{(x,y) : x \in X \land y \in Y\}
+	$$
+	or equivalently:
+	$$
+	a \in (X \times Y) \iff a = (x,y) \land x\in X \land  y \in Y
+	$$
+\end{definition}
+
+\begin{definition}
+	(Ordered $n$-tuple and $n$-fold cartesian product). An 
+	oredered n-tuple $(x_i)_{1 \leq i \leq n}$, also 
+	denoted as $(x_1, x_2, \dots, x_n)$ is a collection of 
+	$n$ objects, where $x_i$ is the $i$th component. Two 
+	ordered $N$-tuples are equal iff each of their components
+	are equal, that is $x_i = y_i$. 
+
+	If $(X_i)_{1 \leq i \leq n}$
+	is an ordered n-tuple of sets, then their cartesian 
+	product $\prod X_i$ is defined as
+	$$
+	\prod X_i := \{(x_i)_{1 \leq i \leq n} : x_i \in X_i \text{ for all } 
+	1 \leq i \leq n\}
+	$$
+	This means take the first component from the first set, the
+	second from the second set, etc, and make all the ones possible.
+\end{definition}
+
+This definition simply postulates that an ordered n-tuple and Cartesian
+product always exist when needed, but using the 
+axioms of set theiry once cna explicitly construct these objects.
+
+\begin{remark}
+	To get Cartesian product, we just need $n$-fold version. 
+	All wee need to do is show $\prod X_i$ is a set. Here's 
+	how we do it. With the power set axiom, we consider the set 
+	of functions $i \mapsto x_i$ from $\{ 1 \leq i \leq n\}$ to 
+	$\bigcup X_i$, that is the set $(\bigcup X_i)^{\{ 1 \leq i \leq n\}}$.
+	Another way of writing this is the set: 
+	$$
+	(\bigcup X_i)^{\{ 1 \leq i \leq n\}} = \{ f\mid f: [n] \to \bigcup X_i\}
+	$$
+	Then we can use the axiom of specification to restrict this to 
+	the set of functions tha map $i \mapsto x_i$ for $x_i \in X_i$. 
+	That is the functions that when given a natural number $i$, select 
+	and element from the set $X_i$. Note that each such function $f_j$ defines
+	an $n$ tuple:
+	$$
+	(f_j(1), f_j(2), \dots, f_j(n)) \in \prod X_i
+	$$
+	With some more work we can show that there is a bijection between 
+	the functions and all possible $n$ tuples in $\prod X_i$, and thus
+	using the axiom of replacement, we can construct $\prod X_i$ is a set.
+\end{remark}
+
+An ordered $n$-tuple of objects is also called an ordered sequence of
+$n$ elements, or a finite sequence.
+
+\begin{lemma}
+	(Finite choice). Consider $n \geq 1$ with $n \in \N$ and for all 
+	$1 \leq i \leq n$ let $X_i$ be a non-empty set. Then there exists
+	an $n$-tuple $(x_i)_{1 \leq i \leq n}$ such that $x_i \in X_i$ for
+	$\forall i$. In other words, if each $X_i$ is non-empty, then 
+	the set $\prod X_i$ is also non-empty.
+
+	\it{Proof} (informal). We prove with induction. When $n=1$, we
+	have the claim is true thanks to the \it{single choice lemma}. 
+	Assume true for $n$. Consider $n +1$. In this case make the 
+	$n+1$ tuple $(x_i)_{1 \leq i \leq n+1}$ by taking the $n$ tuple
+	$(x_i)_{1 \leq i \leq n}$ and then using the single choice lemma
+	to select $x_{n+1} \in X_{n+1}$. Thus the claim is true for
+	$n+1$ and so by induction is true for all $n$. \hfill $\blacksquare$
+\end{lemma}
+
+This lemma is essentially trivial (although requires rigour to prove). 
+It just said given a finite number of non-empty sets, we can pick
+an element from each. It cannot, however, be extended to 
+an infinite number of sets. For this we need the axiom of choice, which 
+we will introduce later.
+This is becuase we cannot induct infinitely.
+
+
+\exercisesline
+
+\it{Exercise 3.5.1}. Define an ordered pair $(x,y)$ to be the set
+$\{\{x\}, \{x,y\}\}$. Show that this definition obeys the definition 
+of an ordered pair.
+
+\it{Proof}. Recall the definition of an ordered pair was simply:
+$$
+(x,y) = (x',y') \iff x=x' \land y=y'
+$$
+Consider two sets $A = \{ \{x\}, \{x,y\}\}$ and $B = \{ \{x'\}, \{x',y'\}\}$.
+We prove both directions in turn. Assume that $\{ \{x\}, \{x,y\}\} = 
+\{ \{x'\}, \{x',y'\}\}$. Thus the sets contain the same elements (by the 
+Axiom of extensionality). Thus $\{ x\} \in B$, but $B$ contains only one 
+element that is a set of one element, thus we must have $\{x\} = \{x'\}$.
+Similarly we have $\{x,y\} \in B$, and so $\{x,y\} = \{x',y'\}$. Note
+this implies $x = x'$ and $y = y'$, and thus.
+$$
+A = B \implies \{x\} = \{x'\} \implies  \{x,y\} = \{x',y'\} \implies x=x' \land y=y'
+$$
+The other direction is simpler, it is trivial that if $x = x'$ and $y = y'$ 
+then $A = B$. Thus we have: 
+$$
+A = B \iff x=x' \land y=y'
+$$
+as required. \hfill $\blacksquare$
+
+\it{Exercise 3.5.12}. TODO This exercise looks really interesting.
+
+\subsection{Cardinality of sets} In the previous chapter we defined 
+the natural numbers axiomatically. We: 
+\begin{itemize}
+	\item Assumed there was $0$ and an increment operation.
+	\item Assumed $5$ axioms of how these interact.
+\end{itemize}
+This is philosophically different to thinking of numbers as 
+``how many things there are,'' or more formally, the cardinality
+of sets.
+
+The Peano axiom approach treats numbers as more \it{ordinals}
+than cardinals. Cardinals are One, Two, Three, etc., and are 
+used to count how many things there are in a set. Ordinals 
+are First, Seond, Third, etc., and are used to order a sequence 
+of objects. \it{There is a difference between the two}, which 
+arises when considering infinite ordinals and infinite cardinals, 
+although we don't need to worry about this.
+
+In the previous section chapter we did not answer the question 
+``can natural numbers be used to \it{count} sets.'' Here 
+we show that they can be used to count the cardinality of sets 
+asssuming the sets are finite.
+
+To start getting at this, we may want to answer a simpler question.
+Not how many elements does a set have, but when do two 
+sets have the same size. One way to do this 
+is to say they have the same size when they have the same
+number of elements, but this becomes circular as we have 
+not defined ``number of elements'' and breaks down if 
+we consider infinite sets.
+
+\begin{definition}
+	(Equal cardinality). Two sets $X$ and $Y$ have equal cardinaloty 
+	iff there exists a bijections $f: X \to Y$. 
+\end{definition}
+
+Note, interestingly, that we don't know yet if $\{1,2\}$ and $\{1\}$ are 
+not the same cardinality? One way to do this would be to enumerate all functions 
+between them and show none are bijective. Weirdly, a set can contain 
+another set as a proper subset and still have the same cardinality (only 
+infinite sets), for example the even numbers and the natural numbers.
+
+\begin{proposition}
+	Equal cardinality is an equivalence relation. Recall this means 
+	that the relation is: 
+	\begin{itemize}
+		\item Reflexive: $X$ has the same cardinality as $X$.
+		\item Symmetric: If $X$ has the same cardinality as $Y$, then 
+			$Y$ has the same cardinal	
+		\item Transitive: If $X$ has the same cardinality as $Y$, and 
+			$Y$ has the same cardinality as $Z$, then $X$ has the same 
+			cardinality as $Z$.
+	\end{itemize}
+\end{proposition}
+
+Consider a natural number $n$. We now want to define what it \it{means} 
+for a set to have $n$ elements.
+
+\begin{definition}
+	Let $n$ be a natural number. A set $X$ is said to have $n$ 
+	elements if it has the same cardinality as the set 
+	$\{1,2,\dots,n\}$. We also say that $X$ has cardinality $n$ 
+	iff it has $n$ elements.
+\end{definition}
+
+Now lets make sure our definition does not lead to any craziness, such as
+a set having two different cardinalities.
+
+\begin{proposition}
+	(Uniqueness of cardinality). If $X$ has cardinality $n$, then 
+	it cannot have another cardinality $m \neq n$.
+
+	\it{Proof} (informal). You start with a lemma that a set 
+		with positive cardinality is non-empty, and if $x \in X$ 
+		then $X - \{x\}$ has cardinlaity $|X| - 1$ (which here
+		denotes the unique predecessor of $n$, as we have not
+		defined negation yet). With this lemma, you prove the 
+		proposition by inducting on $n$ the cardinality 
+		of $X$. Consider we have the inductive assumption 
+		and are looking at a set with cardinality $n\pp$ but
+		also cardinality $m$ with $m \neq n$. Then we have
+		$X - \{x\}$ has cardinality $n$ and $m-1$, and by the 
+		inductive assumption $n=m-1$. But the Peano 
+		axioms say each number has a unique successor, so $n\pp = m$
+		which is a contradiciton.
+\end{proposition}
+
+Now we have defined cardinality and with this proposition, 
+we know that $\{1,2\}$ and $\{1\}$ do not have the same cardinality 
+and we \it{do not} have to enumerate all fnuctions between them 
+and show none are bijective. Instead we just need to show 
+a function for each to get the cardinality of one as $2$ 
+and the other as $1$.
+
+\begin{definition}
+	(Finite sets). A set is finite iff it has a 
+	cardinality $n$ for some natural number $n$.
+	Otherwise the set is called infinite. If X is
+	a finite set, we use $|X|$ to denote its 
+	cardinality.
+\end{definition}
+
+\begin{theorem}
+	The set of natural numbers $\N$ is ifinite.	
+
+	\it{Proof}. ATC that this is false. Thus $\exists n \in \N$ 
+	such that $|\N| = n$. Thus there $\exists$ a bijection 
+	$f: \{1,2,\dots,n\} \to \N$. Consider $f(1), f(2), \dots, f(n)$. 
+	We can show that this is bounded, that is there exists some $M > f(i)
+	\forall i \in \{1,2,\dots,n\}$. Then consider $M+1$. This 
+	is not mapped to by $f$, thus $f$ is not surjective and so 
+	is not a bijection, which is a contradiction.
+\end{theorem}
+
+Now we switch gears for a second. Lets see if we can define airhtmetic 
+in terms of the cardinality of sets as opposed to using the 
+Peano axioms.
+
+\begin{proposition}
+	(Cardinal arithmetic)
+	\begin{enumerate}[label=(\alph*)]
+		\item Let $X$ be finite set and $x \not \in X$, then
+			$|X \cup \{x\}| = |X| + 1$.
+		\item If $X$ and $Y$ are finite sets then $X \cup Y$ 
+			is finite and $|X \cup Y| \leq |X| + |Y|$. 
+			If $X$ and $Y$ are disjoint then $|X \cup Y| = |X| + |Y|$.
+		\item If $X$ is finite and $Y \subseteq X$ then $Y$ is finite
+			and $|Y| \leq |X|$. If $Y \subset X$ then $|Y| < |X|$.
+		\item If $X$ if finite and $f : X \to Y$ then $f(X)$ is finite 
+			and $|f(X)| \leq |X|$. If $f$ is injective then
+			$|f(X)| = |X|$.
+		\item If $X$ and $Y$ are finite sets then $Y^X$ is 
+			finite and $|Y^X| = |Y|^{|X|}$.
+		\item If $X$ and $Y$ are finite sets then $X \times Y$ is finite
+			and $|X \times Y| = |X| \times |Y|$.
+	\end{enumerate}
+\end{proposition}
+
+The above propositions form the basis of arithmetic of natuaral numbers 
+\it{without using the recursive Peano axioms}. This is the basis 
+of \it{cardinal arithmetic}. For this work, we won't develop this 
+arithmetic further and instead use the Peano axioms.
+
+\exercisesline
+
+\it{Exercise 3.6.10}. Let $A_1,\dots,A_n$ be finite sets such 
+that $|\bigcup_{i=1}^n A_i|  > n$. Show thatb there exists 
+$i \in \{1,...,n\}$  such that $|A_i| \geq 2$. This is known as 
+\it{the pigeonhole principle}.
+
+\it{Proof}. We prove by induction. For $n=1$ we have $|A_1| > 1$ 
+and thus the claim holds. Assume true for $n \in \N$. Now consider 
+$n +1$. We have $|\bigcup_{i=1}^{n+1} A_i| > n+1$. We have two cases: 
+\begin{enumerate}
+	\item $|A_{n+1}| \geq 2$ in which case we are done.
+	\item $|A_{n+1}| = 1$. Thus $A = \{x\}$. Now remove this from 
+		the union. Now if $\{x\} \not \in \bigcup_{i=1}^n A_i$ then 
+		we have $|\bigcup_{i=1}^n A_i| > n$ and so by the inductive
+		assumption we have $|A_i| \geq 2$ for some $i$. If
+		$\{x\} \in \bigcup_{i=1}^n A_i$ then we have the size
+		of the union is unchanged, so $|\bigcup_{i=1}^n A_i| > n$, 
+		so again by the inductive assumption we have $|A_i| \geq 2$
+		for some $i$.
+\end{enumerate}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 4             %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Integers and Rationals}
+
+\subsection{Integers}
+
+We want to introduce a notion of subtraction, on top of addition 
+and multiplicaiton which we already have. Informally, the 
+integers are what we get when subtracting two natural numbers.
+This is not a complete definition because: 
+\begin{enumerate}[label=\arabic*)]
+	\item It doesn't say when two differences are equal.
+	\item It doesn'y say how to add and multiply integers 
+		(do arithmetic).
+	\item Its circular, we haven't defined subtrafction yet, 
+		and infact need the integers to do this.
+\end{enumerate}
+We will build the integers by defininging them to follow the algebraic
+rules we know. For a), if $a-b = c-d$, then this means $a + d = b + c$.
+So equality can be defined using addition. To answer b), we know 
+that $(a - b) + (c -d) = (a + c) - (b + d)$ and $(a - b)(c - d) = ac - bd$,
+so we can define addition and multiplication using these rules. 
+Finally for c), we will being by writing integers as $a\mem b$ instead,
+where $\mem$ is simply a placeholder symbol. Later when we define 
+subtraction, we will see that $a-b = a\mem b$, and we can remove it. 
+
+\begin{definition}
+	(Integers). An integer is an expression of the form 
+	$a\mem b$, where $a$ and $b$ are natural numbers. Two 
+	integers are qual, $a\mem b = c\mem d$, iff $a + d = b + c$.
+	We let $\Z$ denote the set of all integers.
+\end{definition}
+
+\begin{remark}
+	This is not the most formal set theoretic definition. What 
+	is an ``expression''? In the language of set theory, we 
+	are imposing an equivalence relation $\sim$ on the space
+	of $\N \times \N$ ordered pairs of natural number,
+	where:
+	$$
+	(a,b) \sim (c,d) \iff a + d = b + c
+	$$
+	Following this, the set theoretic definition of $a \mem b$ is 
+	the equivalence class of $(a,b)$:
+	$$
+	a \mem b := \{ (c,d) \in \N\times\N : (a,b) \sim (c,d) \}
+	$$
+	From this, we can us the normal definition of set equality
+	to say $a \mem b = c \mem d$. 
+	This interpretation plays no role in how we end up manipulating 
+	integers, and infact thinking of integers as a set of 
+	equivalent pairs of natural numbers is quite cumbersome.
+\end{remark}
+
+To check that this is a legitimate notion of equality, we need 
+to make sure that it is reflexive, symmetric, and transitive, and 
+obeys the substitution property. Note that we cannot verify the 
+substiution axiom because we have not defined any binary operations
+on the integers yet, luckily we only need to do it for the basic
+operations as more complex operations will be built from these.
+
+\begin{definition}
+	The asume of two integers is defined as: 
+	$$
+	a \mem b + c \mem d := (a + c) \mem (b + d)
+	$$
+	The producwe of two integers is defined as: 
+	$$
+	(a\mem b)(c\mem d) := (ac + bd) \mem (ad + bc)
+	$$
+\end{definition}
+
+\begin{lemma}
+	(Addition and multiplication are well defined). We check 
+	the axiom of substitution. 
+
+	\it{Proof}. For brevity we just show addition. Consider 
+	$a \mem b = a' \mem b'$. We want to show:
+	$$
+	(a \mem b) + (c \mem d) = (a' \mem b') + (c \mem d)
+	$$
+	We have: 
+	\begin{align*}
+		LHS &= (a+c)\mem (b + d) \\	
+		RHS &= (a' + c) \mem (b' + d)
+	\end{align*}
+	Now recall the definition of equality on the integers. We have 
+	$LHS = RHS  \iff a+c + b'+d = a' + c + b + d$. Note that we have
+	$$
+	a - b = a' -b' \implies a + b' = a' + b
+	$$
+	By adding $c+d$ to both sides we get:
+	$$
+	a + c + b' +d = a' + c + b +d \implies LHS = RHS
+	$$
+	which concludes the proof. \hfill $\blacksquare$
+\end{lemma}
+
+The integers $n\mem 0$ behave the same way as the natural numbers
+(we can show that addition and multiplication works the saem way,
+and that $n\mem 0 = m \mem 0 \\ \iff n = m$). We say there is 
+an \it{isomorphism} between $\N$ and the integers of the form $n\mem 0$.
+This allows us to identify the natural numbers with integers by 
+setting $n = n\mem 0$. We can now define incrementation on the integers 
+by defining $x \pp = x+1$. 
+
+\begin{definition}
+	(Negation of integers). If $(a\mem b)$ is an integer, we define
+	the negation $-(a\mem b)$ to be the integer $(b\mem a)$.
+	In particular if $n = n \mem 0$ is a positive natural number, 
+	we define the negation $-n = n\mem 0$. (We leave showing 
+	that this definition is well defined as an exercise for the 
+	reader).
+\end{definition}
+
+\begin{lemma}
+	(Trichotomy of integers). Let $x$ be an integer. Then exactly	
+	Then exactly one of the following statements is true:
+	\begin{enumerate}
+		\item $x$ is 0.
+		\item $x$ is equal to a positive natural numebr $n$,
+		\item $x$ is the negation $-n$ of a positive natural 
+			number $n$.
+	\end{enumerate}
+
+	\it{Proof}. We first show that at least one of the above is true.
+	By definition $x = a\mem b$ for $a,b \in \N$. By the trichotomy
+	of natural numbers, we have $a = b$, $a < b$ or $a > b$. We consider 
+	each case in turn:
+	\begin{itemize}
+		\item $a =b$. In this case we have have $x = a \mem a$.
+			From the definition of equality $a \mem a = 0 \mem 0$. 
+			From identifying natural numbers with integers $n \mem 0$
+			we have $x = 0$.
+		\item $a > b$. In this case we have some $c\in \N$ such 
+			that $a = b + c$. Thus we have $x = (b+c) \mem b$. Again 
+			by equality of integers we have $x = c \mem 0 = c$, 
+			which is a positive natural number.
+		\item $a < b$. In this case we have some $c \in \N$ such 
+			that $b = a + c$. Thus we have $x = a \mem (a+c)$.
+			This gives us $x = 0 \mem c = -(c \mem 0) = -c$ by 
+			the definition of negation.
+	\end{itemize}
+	We leave showing that only 1 can happen at a time as an exercise
+	to the reader (basically just look at every possible pair
+	happening and show that they are impossible). \hfill $\blacksquare$
+\end{lemma}
+
+If $n$ is a positive natural number, we call $-n$ a negative integer. We
+now summarize the algebraic properties of the integers.
+
+\begin{proposition}
+	(Laws of algebra for integers). Let $x,y,z$ be integers. Then 
+	we have:
+	\begin{align*}
+		x + y &= y + x	
+		(x+y) + z &= x + (y+z) \\
+		x + 0 = 0 + x &= x \\ 
+		x + (-x) = (-x) + x &= 0 \\ 
+		xy = yx \\ 
+		(xy)z &= x(yz) \\ 
+		x1 = 1x &= x \\ 
+		x(y+z) &= xy + xz \\ 
+		(y+z)x &= yx + zx
+	\end{align*}
+
+	\it{Proof}. The easiest way to prove this to to define:
+	$$
+	x = (a \mem b) \quad y = (c \mem d) \quad z = (e \mem f)
+	$$
+	then write out each identity in terms of the above, expand 
+	using the algebra of integers we already have and then 
+	the algebra of natural numbers. For example:
+	\begin{align*}
+		(xy)z &= (a\mem b)(c\mem d)(e\mem f) \\	
+		      &= ((ac + bd) \mem (ad + bc)) (e \mem f) \\
+		      &= ((ace + bde + adf + bcf) \mem (acf + bdf + ade + bce)) \\
+		x(yz) &= (a\mem b)((ce + df) \mem (cf + de)) \\
+		      &= (ace + bde + adf + bcf) \mem (acf + bdf + ade + bce)
+	\end{align*}
+	We leave proving the rest as an exercise to the reader. \hfill $\blacksquare$
+\end{proposition}
+
+\begin{remark}
+	The above nine identities assert that the intergers form 
+	a \it{commutative ring}. This means the set integers forms 
+	a commutative additive group, with an additional 
+	multiplication operation that is associative, commutative,
+	distributive over addition.
+	If $xy \neq yx$ then it would just be a ring. If the 
+	set had multiplicative inverses, then it would also 
+	form a multiplicative commutative group, and thus 
+	would be a \it{field}. The rational $\Q$ will be
+	the first field that we encounter.
+\end{remark}
+
+\begin{definition}
+	(Subtraction). We define the operation of subtraction to be: 
+	$$
+	x - y := x + (-y)
+	$$
+\end{definition}
+
+We do not need to verify the substiution axiom for this opertaion,
+since it is defined in terms of two operations on integers 
+(addition and negation) that already obey this axiom.
+
+Now lets get rid of the pesky $\mem$ symbol! Let $a,b \in \N$. Then 
+we have: 
+$$
+a - b = a + (-b) = (a \mem 0) + (0 \mem b) = (a \mem b)
+$$
+We now generalize a couple of propositions that we had for the natural 
+numbers to the integers.
+\begin{proposition}
+	(Integers have no 0 divisors). For $a,b \in \Z$ such 
+	that $ab = 0$, then either $a = 0$ or $b = 0$.
+\end{proposition}
+
+\begin{proposition}
+	(Cancellation law of integers). Let $a,b,c \in \Z$ such that
+	$ac = bc$ and $c \neq 0$. Then $a = b$.
+\end{proposition}
+
+We now repeat the definition of order (that is defining $<$ and $>$) 
+verbatum for the integers.
+
+\begin{definition}
+	(Ordering of the integers). Let $n$ and $m$ be integers. 
+	$n \geq m$ iff $n = m + a$ for some natural number $a$.
+	$n > m$ iff $n \geq m$ and $n \neq m$. 
+\end{definition}
+
+\begin{lemma}
+	(Properties of order of integers). We summarize some simple 
+	facts. Let $a,b,c \in \Z$, then:
+	\begin{enumerate}
+		\item $a > b \iff a -b$ is a positive natural number.
+		\item (Addition preserves order). $a > b \implies a + c > b + c$.
+		\item (Positive ultiplication preserves order). 
+			$a > b \land c > 0 \implies ac > bc$.
+		\item  (Negative multiplication reverses order). 
+			$a > b \land c < 0 \implies ac < bc$.
+		\item (Order is transitive). $a > b \land b > c \implies a > c$.
+		\item (Order is trichotomous). Exactly one of $a > b$, $a = b$, 
+			or $a < b$ is true.
+	\end{enumerate}
+\end{lemma}
+
+\exercisesline
+
+\it{Exercise 4.1.4}. Show that $(-1) \times a = -a$ for any integer $a$.
+
+\it{Proof}. For $a \in \Z$ we have $a = n \mem m$ for $n,m \in \N$ 
+and $-1 = 0\mem 1$. We get: 
+\begin{align*}
+	(-1) \times a &= (0 \mem 1)(n \mem m) \\
+		      &= (0n + 1m) \mem (0m + 1n)  \\
+		      &= (m \mem n) = -a
+\end{align*}
+from the definition of negation. \hfill $\blacksquare$
+
+\it{Exercise 4.1.8}. Show the the principle of induction does 
+not apply to the integers. That is exhibit a property $P(x)$ for 
+$x \in \Z$ such that $P(0)$ is true, and $P(x) \implies P(x+1)$, 
+but $P(n)$ is not true $\forall n \in \Z$.
+
+\it{Proof}. Consider an integer $x$ that is $m - n$ for 
+natural numbers $m,n$. Let $P(x) = P(m-n)$ be the property that $m \geq n$. 
+We have $P(0) = P(0-0)$ is true as $0 \geq 0$. If $P(x)$ is true 
+then $P(x+1)$ is true as $x+1 = (m+1) - n$ and $m+1 \geq n$ as $m \geq n$.
+Note that for negative integers, $P(x)$ is untrue however.
+\hfill $\blacksquare$
+
+\subsection{Rational Numbers}
+
+We defined the integers with addition, multiplication, subtraction, 
+and order and verified all the algebraic and order-theoretic 
+properties. We now add build the rationals, adding division 
+to our list of operations.
+
+As the integers were constructed by subtracting two natural 
+numbers, the rations are constructed by dividing two integers.
+
+We know what we expect, that $a/b = c/d$ iff $ad = bc$. Just 
+like we did with the integers, we create a new meaningless 
+symbol $//$ which will eventually be replaced with the devision 
+symbol, and make the following definition.
+
+\begin{definition}
+	(Rational numbers). A rational number is an expression of the	
+	form $a//b$, where $a$ and $b$ are integers and $b \neq 0$.
+	Two rational numbers $a//b$ and $c//d$ are equal, $a//b = c//d$,
+	iff $ad = bc$. The set of rational numbers is denoted by $\Q$.
+\end{definition}
+
+For full rigour we should show this is a valid definition of equality
+by showing it is reflexive, symmetric, and transitive, and obeys
+the axiom of substitution. We will not do this here. Now we 
+need to define addition, multiplication, and division, which 
+follow our intution that $a/b + c/d = (ad + bc)/(bd)$,
+and $a/b \times c/d = ac/bd$ and $-(a/b) = (-a)/b$.
+
+\begin{definition}
+	(Addition, multiplication, and negation of rationals). 
+	Let $a,b,c,d \in \Z$ with $b,d \neq 0$. We define:
+	\begin{align*}
+		(a//b) + (c//d) &= (ad + bc)//(bd) \\
+		(a//b) \times (c//d) &= (ac)//(bd) \\
+		-(a//b) &= (-a)//b
+	\end{align*}
+\end{definition}
+
+Note that if $b$ and $d$ are non zero, then $bd$ is non zero, so addition 
+and multiplication are closed over the rationals. 
+\begin{lemma}
+	Addition, product, and negation are well defined on the integers.
+	This means that if one replaces $a//b$ with $a'//b'$ with 
+	$a//b = a'//b'$, then the output of the operations remains 
+	the same, and the same is true for $c//d$.
+\end{lemma}
+
+\begin{remark}
+	At this point when we are in abstract land, why do we 
+	not allow dividing by $0$? This is because if we did,
+	then $(a/0) \times (0/1) = (a0/0) = (a/1)$ by the definition
+	of rational number equality (as $a0 = a0$), but it 
+	would also equal $(0/0) = 0$, which is a contradiction 
+	if $a \neq 0$.
+\end{remark}
+
+\begin{remark}
+	The rational numbers $a //1$ behave identically to the integer $a$:
+
+	\begin{align*}
+		(a // 1) + (b // 1) &= (a + b)//1 \\	
+		(a // 1) \times (b // 1) &= (ab)//1 \\ 
+		-(a // 1) &= (-a)//1
+		a//1  = b//1 \iff a = b
+	\end{align*}
+
+	Because of this, we will identify $a$ with $a//1$ for all integers 
+	$a$.
+\end{remark}
+
+We define the reciprocal operation on the rations, which is 
+analogous to the negation operation on the integers.
+
+\begin{definition}
+	(Reciprocal) For non-zero $x = a//b$ we define the reciprocal
+	to be $x^{-1} = b//a$. This preserves equaity (axiom of 
+	substitution).
+\end{definition}
+
+Note that an operation such as ``numerator'' does note respect
+the axiom of substitution, so we cannot include it. This 
+means we need to be careful in proofs when we say things like
+``the nubmerator of $x$ is $a$'' and then use this fact. We 
+also have that the reciprocal of $0$ is undefined. 
+
+\begin{proposition}
+	(Laws of algebra on the rationals). Let $x,y,z$ be 
+	rational numbers, then we have:
+	\begin{align*}
+		x + y &= y + x \\
+		(x+y) + z &= x + (y+z) \\
+		x + 0 = 0 + x &= x \\
+		x + (-x) = (-x) + x &= 0 \\
+		xy = yx \\
+		(xy)z &= x(yz) \\
+		x1 = 1x &= x \\
+		x(y+z) &= xy + xz \\
+		(y+z)x &= yx + zx	
+	\end{align*}
+
+	If $x$ is non-zero, then: 
+	$$
+	xx^{-1} = x^{-1}x = 1
+	$$
+
+	\it{Proof}. The proof is long and invovled, but similar 
+	to proving the algebraic properties of the integers,
+	we simply write $x = a//b$, $y = c//d$, etc. and 
+	verify each identity in turn. We leave this as 
+	an exercise to the reader. \hfill $\blacksquare$
+\end{proposition}
+
+\begin{remark}
+	Note that the above algebraic properties match that of
+	the integers exactly except for the the additional 
+	of the final idnetity involving reicprocals. This identity,
+	which states the existance of multiplicative inverses for 
+	all elements of the set except for the addititive identity $0$, 
+	makes the rationals a \it{field}. This is the first field
+	we have encountered (recall that the integers were a 
+	commtuative ring).
+\end{remark}
+
+\begin{definition}
+	(Quotient) The quotient of rational numbers $x$ and $y$, 
+	provided that $t$ is non-zero, is defined as: 
+	$$
+	x / y = x \times y^{-1}
+	$$
+\end{definition}
+
+For example $(3//4)/(5//6) = (3//4) \times (6//5) = 18//20 = 9//10$. 
+Using this definition, we can see that $a/b = a//b$ for every 
+integer $a$ and non-zero integer $b$. This is because:
+$$
+a/b = a \times b^{-1}= (a//1) \times (b//1)^{-1} = a//1 \times 1//b = a//b
+$$
+Thus we can discard $//$  and simply use $/$.
+
+\begin{definition}
+	(Subtraction on the rations). We define subtraction on the rationals 
+	identically as we did for the integers:
+	$$
+	x - y = x+ (-y)
+	$$
+\end{definition}
+
+\begin{definition}
+	A rational number $x$ is positive iff $x = a/b$ for some 
+	positive integers $a,b$. It is egative iff $x = -y$ for 
+	some positive rational number $y$. 
+\end{definition}
+
+\begin{lemma}
+	(Trichotemy of rationals). If $x$ is ration, then it is 
+	positive, negative, or 0.
+\end{lemma}
+
+\begin{lemma}
+	(Ordering of rationals). If $x,y$ are rational, $x > y$ 
+	iff $x-y$ is a positive rational, and $x < y$ 
+	is a negative rational. We write $x \geq y$ iff either 
+	$x > y$ or $x =y$.
+\end{lemma}
+
+\begin{proposition}
+	(Propterites of order on the rationals). We've seen these 
+	all before for the integers:
+	\begin{enumerate}[label=(\alph*)]
+		\item (Order trichotemy). One of $x > y$, $x = y$, or 
+			$x < y$ is true.
+		\item (Order is anti-symmetric). $x < y$ iff $y > x$.
+		\item (Order is transitive). $x > y$ and $y > z$ implies 
+			$x > z$.
+		\item (Addition preserves order). $x > y$ implies $x + z > y + z$.
+		\item (Positive mult preserves order). $x > y$ and $z > 0$ implies 
+			$xz > yz$.
+	\end{enumerate}
+\end{proposition}
+
+The above properties combined with the field algebraic properties combine
+to make $\Q$ an \it{ordered field}. 
+
+\exercisesline
+
+\it{Exercise 4.2.6}. Show that if $x,y,z\in\Q$ such that $x < y$ and 
+$z$ is negative, then $xz > yz$.
+
+\it{Proof}. We have $x < y$ so $x - y$ is positive. We have $z$ is
+negative so $-z$ is positive. Thus $x-y$ and $-z$ are positive so:
+\begin{align*}
+	x &< y \\ 
+	x (-z) &< y (-z) \\ 
+	-xz  &< -yz \\ 
+	-xy + xz &< -yz + xz \\ 
+	0 &< xz - yz \\ 
+	yz &< xz \\
+	xz &> yz 
+\end{align*}
+
+
+\subsection{Absolute Value and exponentiation} 
+
+We have defined addition, multiplication, subtraction, and division
+on the rationals, with the latter two being defined in terms of the
+more primitve negations $x + (-y)$  and reciprocal $x \times y^{-1}$ 
+operations. We can now define other operations. Here we introduce 
+absolute value and exponentiation.
+
+\begin{definition}
+	(Absolute value). If $x$ is rational, then the absolute value 
+	$|x|$ is defined as:
+	$$
+	|x| = \begin{cases}
+		x & \text{if $x$ is positive}  \\	
+		-x & \text{if $x$ is negative} \\ 
+		0 & \text{if $x = 0$}
+	\end{cases}
+	$$
+\end{definition}
+
+\begin{definition}
+	(Distance). Let $x,y\in\Q$. The quantity $|x-y|$ os ca;;ed 
+	the distance between $x$ and $y$, sometimes denoted $d(x,y)$.
+\end{definition}
+
+\begin{proposition}
+	(Basic properties of absolute value and distance). For 
+	$x,y,z \in Q$ we have: 
+	\begin{enumerate}[label=(\alph*)]
+		\item (Non degenerate). $|x| \geq 0$. Also $|x| = 0$ iff 
+			$x =0$. 
+		\item (Traingle inequality for abs). $|x + y| \leq |x| + |y|$.
+		\item $-y \leq x \leq y$ iff $|x| \leq y$. Thus we have 
+			$-|x| \leq x \leq |x|$. 
+		\item (Multiplicity of abs). $|xy| = |x||y|$. Thus $|-x|=|x|$.
+		\item (Non gen of distance). $d(x,y) \geq 0$. Also $d(x,y) = 0$ 
+			iff $x = y$.
+		\item (Symmetry of distance). $d(x,y) = d(y,x)$.
+		\item (Triangle inequality for distance).
+			$d(x,z) \leq d(x,y) + d(y,z)$.
+	\end{enumerate}
+\end{proposition}
+
+Distance (and thus absolute value) are useful for measuring
+how close two numebrs are. 
+
+\begin{definition}
+	($\vep$-closeness). Let $\vep > 0$ be a rational number, and 
+	$x,y$ be rational. We say that $y$ is $\vep$-close to $x$ 
+	iff $d(x,y) < \vep$.
+\end{definition}
+
+Note that this definition is not standard in other textbooks. We 
+use it to build scaffolding and then discard it later, much like 
+$//$ and $\mem$ for the	rationals and integers respectively.
+
+\begin{proposition}
+	(Properties of $\vep$-closeness). Consider $x,y,z,w\in\Q$. We have:
+	\begin{enumerate}[label=(\alph*)]
+		\item  If $x=y$, then $x$ is $\vep$-close to $y$ for 
+			any $\vep > 0$. Conversely, if $x$ is 
+			$\vep$-close to $y$ for all $\vep > 0$, then
+			$x=y$.
+		\item (Symmetric). If $x$ is $\vep$-close to $y$, then 
+			$y$ is $\vep$-close
+		\item (Sort of transititve). If $x$ and $y$ 
+			are $\vep$ close and $y$ and $z$ are $\delta$ 
+			close then $x$ and $z$ are $(\vep + \delta)$ close.
+		\item Let $\vep, \delta > 0$. If $x$ and $y$ are
+			$\vep$ close and $z$ and $w$ are $\delta$ close,
+			then $x+ z$ and $y +w$ are $(\vep + \delta)$ close.
+			Also $x -z$ and $y-w$ are $(\vep + \delta)$ close.
+		\item If $x$ and $y$ are $\vep$ close, then they
+			are $\vep'$ close $\forall \vep' > \vep$.
+		\item If $y$ and $z$ are both $\vep$ close to $x$, and 
+			$y \leq w \leq z$ or $z \leq w \leq y$, then 
+			$w$ is $\vep$ close to $x$.
+		\item If $x$ and $y$ are $\vep$ close, and $z \neq 0$, then 
+			$xz$ and $yz$ are $\vep|z|$ close.
+		\item If $x$ and $y$ are $\vep$ close, and $z$ and $w$ 
+			are $\delta$ close, then $xy$ and $yw$ are 
+			$(\vep |z| + \delta |y| + \vep \delta)$ close.
+	\end{enumerate}
+
+	\it{Proof}. We prove only (h). We want to say something 
+	about $|yw - xz|$ We will write $yw$ in terms of $x$ and $z$.
+	
+	Let $a = x-y$, thus $y = x +a$ with $|a| \leq \vep$. Let $b = w-z$,
+	thus $w = z + b$ with $|b| \leq \delta$. We have:
+	$$
+	yw = (x+a)(z+b) = xz + az + xb + ab
+	$$
+	This gives us:
+	\begin{align*}
+		|yw - xz| &= |az + xb +ab | \\ 
+			  &\leq |az| + |xb| + |ab|  \tag*{By triangle ineq}\\
+			  &\leq |z||a| + |x||b| + |a||b| \tag*{By multiplicity} \\
+			  &\leq \vep|z| + \delta|x| + \vep\delta
+	\end{align*}
+
+	Thus we have $yw$ and $xz$ are $(\vep |z| + \delta |y| + \vep \delta)$
+	close. \hfill $\blacksquare$
+\end{proposition}
+
+Now we define exponentiation for natural numbers recursively as we
+did with multiplicaiton. 
+
+\begin{definition}
+	(Exponentiation of a natural number). Let $x$ be a 
+	rational number. To raise $x$ to the pwer $0$ 
+	we define $x^{0} :=1$, and thus $0^0=1$. Now suppose 
+	inductively that we have defined $x^{n}$ for some
+	$n \in \N$. We define $x^{n+1} := x^{n} \times x$.
+\end{definition}
+
+We now do so for negative integers.
+
+\begin{definition}
+	(Exponentation to a negative numebr). Let $x$ be a non-zero 
+	rational number. Then for any negative integer
+	$-n$, we define $x^{-n} := 1/x^n$.
+\end{definition}
+
+We now have $x^n$ defined for any integer $n$, and it is closed 
+over the rationals. 
+
+\begin{proposition}
+	(Properties of exponentiation). For $x,y$ non-zero 
+	rational numbers, we have:
+	\begin{enumerate}[label=(\alph*)]
+		\item $x^n x^m = x^{n+m}$. $(x^n)^m = x^{nm}$. $(xy)^n = x^n y^n$.
+		\item For $n>0$, $x^n =0$ iff $x=0$.
+		\item If $x \geq y > 0$ then $x^n \geq y^n > 0$ if $n$ is positive.
+			and $0 < x^n \leq y^n$ if $n$ is negative.
+		\item If $x,y > 0$, $n \neq 0$, and $x^n = y^n$, then $x=y$.
+		\item We have $|x^n| = |x|^n$.
+	\end{enumerate}
+\end{proposition}
+
+\exercisesline
+
+\it{Exercise 4.3.5}. Prove that $2^N \geq N$ for all positive integers $N$. 
+
+\it{Proof}. We do so by induction. For $N=1$ we have $2^1 = 2 \geq 1$. 
+Assume truen for $N=n$. Now consider $N=n+1$, we have:
+\begin{align*}
+	2^{n+1} &= 2^n \times 2 \\ 
+		&\geq N \times 2 \tag*{By inductive assumption}\\ 
+		&= N + N \\
+		&\geq N + 1 \tag*{As $N \geq 1$}
+\end{align*}
+
+\subsection{Gaps in the rational numbers}
+
+This is a non-rigerous argument, but consider lining up all 
+the rational numbers on a line from $y$ to $x$ (for $y < x$). 
+Inside the rationals we have the integers. 
+
+\begin{proposition}
+	(Interspersing of integers by rationals). Consider $x\in\Q$. 
+	There exists an $n\in\Z$ such that $n \leq x < n+1$. Thus 
+	there exists and $N \in \N$ such that $N > x$. Thus there 
+	is no such thing as a rational number which is larger 
+	than all naturals.
+\end{proposition}
+
+\begin{remark}
+	In integer $n$  for which $n \leq x < n+1$ is sometimes 
+	called the integer part, and is $n = \lfloor x \rfloor$.
+\end{remark}
+
+\begin{proposition}
+	(Interspersing of rationals by rationals). For $x,y \in \Q$ 
+	such that $x < y$, there exists $z \in \Q$ such that
+	$x < z < y$.
+
+	\it{Proof}. Start with $z = (x+y)/2$. Sinze $x < y$ 
+	and $1/2 = 1//2$ is positive, we have $x/2 < y/2$. Adding 
+	$y/2$ to both sides we get $z < y$. Do same for $x_2$ and 
+	we conclude the proof. \hfill $\blacksquare$
+\end{proposition}
+
+Despite the rationals having this denseness to them, there are 
+still ``gaps'' between rationals. The denseness does ensure these
+``gaps'' are infinitesimally small, but they are still there.
+
+\begin{proposition}
+	There does not exists a rational $x$ such that $x^2 = 2$.
+
+	\it{Proof}. Assume such an $x$ exists. We can assume 
+	it is positive (if it were not, then replace with $-x$ 
+	as $(-x)^2 = x^2$. So for $p,q \in \N$ we have: 
+	$$
+	x = p/q \implies x^2  = p^2/q^2 = 2 \implies p^2 = 2q^2
+	$$
+	Thus we have that $p^2$ is even. Thus $p$ is even, as 
+	otherwise $p^2$ would be odd. So we have $p = 2k$. Thus 
+	$2q^2 = 4k^2 \implies q^2 = 2k^2$. Thus $q$ is even, 
+	and $q = 2l$ for some $l$. Note that $k < p$ and $ l < q$, 
+	and all are natural numbers. We can repeat this 
+	process infinitely, which contradicts the 
+	principle of infinite descent.
+\end{proposition}
+
+We can however get rationals that are arbitrarily close to root 2.
+
+\begin{proposition}
+	For every rational $\vep >0$, there exists 
+	a non-negtaive rational $x$ such that $x^2 < 2 < (x + \vep)^2$. 
+\end{proposition}
+
+What this means is that we can get as close as we want to $\sqrt{2}$.
+For example:
+
+$$
+1.4, 1.41, 1.414, 1.4142, 1.41421, \ldots
+$$
+
+(here and going forward we use terminating decimals which can 
+simply be written as rationals). From the above, it seems 
+like we can make root 2 by taking the ``limit'' of 
+a sequence of rational numbers. This is how we will 
+construct the real numebrs in the next section.\footnote{There
+are other ways to make the reals, in particular using 
+``Dedekind cuts'', or using infinite decimal expansions.} 
+
+\exercisesline
+
+\it{Exercise 4.4.2}. A sequence $a_0, a_1, a_2, \dots$ of numbers 
+(natural, interger, rational, real) is said to be in \it{infinite descent}
+if we have $a_n > a_{n+1}$ for all natural numbers $n$. Prove 
+the \it{principle of infinite descent}: that it is not possible 
+to have a sequence of natural numbers which is in infinite descent.
+
+\it{Proof}. Assume towards contradiction that such a sequence 
+did exist. As all $a_i$ are natural numbers we have $a_i \geq 0$. 
+We use induction to show that $a_i \geq k$ for all $k$. Assume 
+that $a_i \geq n$. Now consider $n+1$. Assume towards contradiction 
+there is some $a_i < n+1$. Then $a_{i+1} < n$, which is a contradiction 
+as all the values are greater than $n$. Thus we have $a_i \geq n+1$
+for all $i$. Now pick $k = a_1$, and we have that $a_2 > k = a_1$ and
+thus the sequence is not in infinite descent, which is
+a contradiction. \hfill $\blacksquare$
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% Section 5         %
+%%%%%%%%%%%%%%%%%%%%%
+
+\section{Real Numbers}
+
+
+Recap of what we have done so far:
+\begin{enumerate}
+	\item Defined natural numbers using the Peano axioms, and 
+		postulated that such a number system exists. Using 
+		the axioms, we recursively defined addition 
+		and multiplication and showed they obeyed our 
+		concepts of algebra on the naturals.
+	\item We constructed the integers using the notion 
+		of difference between two natural numbers $a\mem b$. 
+	\item We constructed the rationals using the notion of 
+		quotient between two integers $a//b$, but excluded
+		dividing by $0$ to keep the laws of algebra consistent.
+\end{enumerate}
+
+The rationals are useful, but fail in places like geometry
+and trigonometry. We must thus replace the rational number 
+line with the real number line. We will also need real 
+number for calculus.
+
+We need more machinary to construct the reals than just 
+aiming to add a new operation (like what we did for the integers 
+and rationals). In particular, we need to define 
+a limit. 
+
+The real numbers will be similar to the rationals, but with 
+some new operations, in particular \it{supremum}, that we then 
+use to define limits. When we give the procedure of constructing
+the reals using limits of sequences of rationals, this is an 
+example of a broader concept known as \it{completing} one 
+metric space from another.
+
+\subsection{Cauch Sequences}
+
+\begin{definition}
+	(Sequences). $m\in\Z$. A sequence $(a_n)_{n=m}^{\infty}$ of 
+	rational numbers is any function $f: \{n \in Z: n \geq m \} \to \Q$.
+	I.e., a mapping that assigns each integer $n$  greater than or
+	equal to $m$ a rational number $a_n$. More informally, it is 
+	simply a collection of rationals.
+\end{definition}
+
+We want to define reals as limits of sequences of rationals. To 
+do this we need to distinguish what sequences converge and what do not.
+
+\begin{definition}
+	($\vep$-steadiness). Let $\vep > 0$. A sequence $(a_n)_{n=0}^\infty$ 
+	is said to be $\vep$-steady iff each pair $a_j, a_k$ of elements 
+	is $\epsilon$-close for every natual number $j,k$. 
+
+	In other words, the sequence $a_0, a_1, a_2, \dots$ is $\vep$-steady
+	iff $d(a_j,a_k) < \vep$ for all $j,k \in \N$.
+\end{definition}
+
+\begin{remark}
+	The above definition is not standard in the literature and 
+	is just used for scaffolding in this section. The same 
+	for the below.
+\end{remark}
+
+\begin{definition}
+	(Eventual $\vep$-steadiness). A sequence $(a_n)_{n=0}^\infty$	
+	is said to be eventually $\vep$-steady iff there exists
+	an $N \geq 0$ such that $a_N, a_{N+1}, a_{N+2}, \dots$ is 
+	$\vep$-steady.
+
+	In other words, if $\exists N \geq 0$ such that 
+	$d(a_j, a_k) < \vep$ for all $j,k \geq N$.
+\end{definition}
+
+\begin{example}
+	The sequence $a_n = 1/n$ is not $0.1$-steady but is $0.1$-eventual 
+	steady.	The sequence $10, 0, 0,0, \dots$ is not $\vep$-steady 
+	for any $\vep < 10$, but is $\vep$-eventual steady for any
+	$\vep > 0$ (not this is strict as the definition of $\vep$ 
+	closeness uses a strict less than inequality, so nothign 
+	can be $0$-close.
+\end{example}
+
+We now define the notion of what it means for a sequnce to ``want'' 
+to converge (this doesn't mean it will).
+
+\begin{definition}
+	(Cauchy sequence). A sequence $(a_n)_{n=0}^\infty$ of rational
+	numbers is a Cauchy sequence iff $\forall \vep > 0$, the
+	sequnce is eventually $\vep$-steady.
+
+	That is the sequnce is Cauchy iff $\forall \vep > 0$, there
+	exists and $N\geq 0$ such that $d(a_j, a_k) < \vep$ for all
+	$j,k \geq N$.
+\end{definition}
+
+\begin{remark}
+	So far we have $\vep$ is rational as we have not defined 
+	the reals. Once we have the reals, we will change 
+	the definition to allow $\vep$ to be real, and show 
+	that:
+	\begin{center}
+		Sequnce is $\vep$-eventuallly steady $\forall \vep > 0$,
+		$\vep \in \Q$ $\iff$ \\
+		Sequnce is $\vep$-eventuallly steady $\forall \vep > 0$,
+		$\vep \in \R$.
+	\end{center}
+\end{remark}
+
+\begin{proposition}
+	The sequnce $a_n := 1/n$ is Caucy.
+
+	\it{Proof}. Let $\vep > 0$. We want to show that the sequence
+	is eventually $\vep$-steady. We have $\vep = a/b$ for positive 
+	$a,b$. There must exists some $N \in \N$ such that $\vep > 1/N$.
+	For all $n,m > 2N$ we have $1/n, 1/m < /2N$. Thus:
+	\begin{align*}
+		|1/n - 1/m| &\leq |1/n| + |1/m| \\
+			    &< 1/2N + 1/2N = 
+			    &=1/N \\
+			    &< \vep
+	\end{align*}
+	Which concludes the proof. \hfill $\blacksquare$
+
+	Note that we know such an $N$ exists because for every rational sits 
+	between two consequtive reals.
+\end{proposition}
+
+\begin{definition}
+	(Bounded sequence). Let $M \geq 0$ be rational. A sequence 
+	$a_1, \dots, a_n$
+	is bounded by $M$ iff $|a_i| \leq M$ for all $1 \leq i \leq n$.
+
+	An infinite sequence is bounded iff $|a_i| \leq M$ for all $i$.
+
+	A sequence is bounded iff there exists a rational $M \geq 0$ such that
+	the sequence is bounded by $M$.
+\end{definition}
+
+\begin{lemma}
+	Every finite sequence $a_1, \dots, a_n$ is bounded.	
+
+	\it{Proof} (brief). Induct on $n$. If $n=1$ then 
+	bounded by $|a_1|$. Assume true for $n$. Consider $n+1$.
+	$a_1, \dots, a_{n+1}$ is bounded by $M + |a_{n+1}|$.
+	\hfill $\blacksquare$
+\end{lemma}
+
+\exercisesline
+
+\it{Exercise 5.1.1}. Show that every Cauchy sequence 
+$(a_n)_{n=0}^\infty$ is bounded. 
+
+\it{Proof}. As it is Cauchy, there exists an $N \in \N$ such that 
+for all $j,k  \geq N$ we have $|a_j - a_k| < 1$. Now 
+consider $a_n, \dots, a_{N-1}$. This is finite so by the above 
+lemma is bounded. Whats more $a_{N}, a_{N+1}, \dots$ is 
+bounded as it is $1$-steady. Thus the entire sequence is
+bounded. \hfill $\blacksquare$
+
+
+\subsection{Eequivalence Cauchy Sequences}
+
+Consider two equences:
+$$
+1.4, 1.41, 1.414, 1.4142, 1.41421, \ldots
+$$
+and 
+$$
+1.5, 1.42, 1.415, 1.4143, 1.41422, \ldots
+$$
+
+Inforammly it seems these two sequences are both converging 
+to $\sqrt{2}$.  We want to define reals as the limits 
+of Caucy sequences, so we need to know when two sequences 
+give the same limit, but that is circular because a limit 
+will be a real number, which we have not introduced yet.
+
+So we need some other definition to say ``these two sequences 
+are the same'' or ``these two sequences are similar.''
+
+\end{document}
+
+
+
+
