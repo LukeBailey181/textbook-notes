@@ -14,6 +14,7 @@
 \newtheorem{proposition}{Proposition}[subsection]
 \newtheorem{lemma}{Lemma}[subsection]
 \newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{corollary}{Corollary}[subsection]
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -26,8 +27,10 @@
 }
 \newcommand{\mem}{\text{\textemdash}} % Math mode emdash
 \newcommand{\vep}{\varepsilon} % Epsilon
-
-% Special \pp operator for peano axioms
+\newcommand{\leftin}{\mathrel{\reflectbox{$\in$}}}
+\newcommand{\LIM}{\mathrm{LIM}}
+\DeclareMathOperator{\infLIM}{\mathrm{LIM}_{n \to \infty}}
+\DeclareMathOperator{\inflim}{\lim_{n \to \infty}}
 \newcommand{\pp}{\mathbin{+\mkern-5mu+}}
 
 \let\bf\textbf
@@ -1859,6 +1862,7 @@ We now have $x^n$ defined for any integer $n$, and it is closed
 over the rationals. 
 
 \begin{proposition}
+\label{properties-of-exponentiation}
 	(Properties of exponentiation). For $x,y$ non-zero 
 	rational numbers, we have:
 	\begin{enumerate}[label=(\alph*)]
@@ -2068,6 +2072,7 @@ We now define the notion of what it means for a sequnce to ``want''
 to converge (this doesn't mean it will).
 
 \begin{definition}
+\label{cauchy-sequence-rational}
 	(Cauchy sequence). A sequence $(a_n)_{n=0}^\infty$ of rational
 	numbers is a Cauchy sequence iff $\forall \vep > 0$, the
 	sequnce is eventually $\vep$-steady.
@@ -2161,6 +2166,1360 @@ will be a real number, which we have not introduced yet.
 
 So we need some other definition to say ``these two sequences 
 are the same'' or ``these two sequences are similar.''
+
+\begin{definition}
+	($\vep$-close sequences). Let $(a_n)_{n=0}^\infty$ and
+	$(b_n)_{n=0}^\infty$. We say that are $\epsilon$-close 
+	iff $a_n$ and $b_n$ are $\vep$-close for all $n \in\N$.
+
+	In other words, $|a_n - b_n| < \vep$ for all $n$.
+\end{definition}
+
+\begin{example}
+	The two sequences
+	$$
+	1,-1,1,-1,\dots
+	$$
+	and
+	$$
+	1.1,-1.1,1.1,-1.1,\dots
+	$$
+	are $0.1$-close to each other. Neither however are 
+	$0.1$-steady.
+\end{example}
+
+
+\begin{definition}
+	(Eventual $\vep$-closeness). Let $(a_n)_{n=0}^\infty$ and
+	$(b_n)_{n=0}^\infty$. We say that are eventually $\epsilon$-close
+	iff there exists an $N \in \N$ such that $a_n$ and $b_n$ are
+	$\vep$-close for all $n \geq N$.
+\end{definition}
+
+\begin{example}
+	Consider: 
+	$$
+	1.1, 1.01, 1.001, 1.0001, \dots
+	$$
+	and
+	$$
+	0.9, 0.99, 0.999, 0.9999, \dots.
+	$$
+	The are not $0.1$-close, but are $0.1$-eventually close.
+\end{example}
+
+\begin{definition}
+	(Equivalent sequences). Two sequences $(a_n)_{n=0}^\infty$ and	
+	$(b_n)_{n=0}^\infty$ are said to be equivalent iff for all 
+	$\vep > 0$ they are eventually $\vep$-close.
+
+	In other words, $a_0, a_1, \dots$ and $b_0, b_1, \dots$ are
+	equivalent iff:
+	$$
+	\forall \Q \leftin \vep > 0, \exists\N\leftin N \geq 0 \quad
+	s.t.\quad |a_n - b_n| \leq \vep \quad \forall n \geq N
+	$$
+\end{definition}
+
+
+
+
+\subsection{The construction of the real numbers}
+
+We introduce a new formal symbol $\LIM$, similar to the formal notions
+of $\mem$ and $//$. This will eventually match the familiar operation
+of $\lim$, at which point the formal $\LIM$ can be discarded.
+
+\begin{definition}
+	(Real numbers). A real number is defined to be an 
+	object of the form $\LIM_{n\to\infty} a_n$, where 
+	$(a_n)_{n=0}^\infty$ is a Cauchy sequence of rational
+	numbers. 
+
+	Two real numbers $\LIM_{n\to\infty} a_n$ and
+	$\LIM_{n\to\infty} b_n$ are equal iff the sequences\\
+	$(a_n)_{n=0}^\infty$ and $(b_n)_{n=0}^\infty$ are
+	equivalent Cauchy sequences. 
+
+	The set of all real numbers is denotes by $\R$.
+\end{definition}
+
+\begin{example}
+	(Informal). Consider $a_1, \dots$ to be:
+	$$
+	1.4,1.41, 1.414, 1.4142, 1.41421, \dots
+	$$
+	and $b_1, \dots$ to be:
+	$$
+	1.5, 1.42, 1.415, 1.4143, 1.41422, \dots
+	$$
+	then $\LIM_{n\to\infty} a_n$ is a real number 
+	and $\LIM_{n\to\infty} b_n$ is a real number
+	beacuse $(a_n)$ and $(b_n)$ are
+	equivalent Cauchy sequences.
+\end{example}
+
+We refer to $\LIM_{n\to\infty} a_n$ as the \it{formal limit} 
+of $(a_n)_{n=0}^\infty$.
+We check that our definition is valid by ensuring equality 
+obeys the three requiers properties.
+
+\begin{proposition}
+	(Formal limits are well-defined). The definition of 
+	equality of real numbers is reflexive, symmetric, and
+	transitive.
+\end{proposition}
+
+When we define other ooerations on the reals we need to make 
+sure the law of subtitution. Now we want to define the usual
+arithmetic operations on the reals.
+
+\begin{definition}
+	(Addition of reals). $x = \infLIM a_n$ and
+	$y = \infLIM b_n$ are real numbers. We define
+	the sum $x+y$ to be:
+	$$
+	x+y := \infLIM (a_n + b_n)
+	$$
+\end{definition}
+
+\begin{example}
+	We have:
+	$$
+	(\infLIM 1 + 1/n) + (\infLIM 2 + 3/n) = \infLIM(3 + 4/n)
+	$$
+\end{example}
+
+We now need to check that this definition is valid. For starters 
+we need to check that the result is still a real number, that is 
+that the sequence $(a_n + b_n)$ is Cauchy.
+
+\begin{lemma}
+	(Sum of Cauchy sequences). Let $x = \infLIM a_n$ and	
+	$y = \infLIM b_n$ be real numbers. Then $x+y$ is 
+	also a real number, meaning that 
+	$(a_n + b_n)$ is Cauchy.
+
+	\it{Proof}. We need to show that for all $\vep > 0$, 
+	there exists an $N \in \N$ such that 
+	$|a_i - a_j| < \vep$ for all $i,j \geq N$. We have:
+
+	Let $\vep > 0$. Let $\delta = \vep/2$. We know 
+	that there is an $N$ such that $|a_i - a_j| < \delta$ 
+	for all $i,j \geq N$ and $M$ such that  $|b_i - b_j| < \delta$ for
+	all $i,j \geq M$. Let $K = \max(N,M)$. We have: 
+	\begin{align*}
+		|a_i + b_i - a_j - b_j| &\leq |a_i - a_j| + |b_i - b_j| \\
+					&< 2\delta \\
+					&= \vep
+	\end{align*}
+	for all $i,j \geq K$ 
+	which concludes the proof. \hfill $\blacksquare$
+\end{lemma}
+
+We also need to check the axiom of substitution. If we replace 
+$x$ with another real equal to it, this should not change
+the sum $x+y$.
+
+\begin{lemma}
+	(Sums of equivalent Cauchy sequnces are equivalent). 
+	Let $x = \infLIM a_n$ and $y = \infLIM b_n$ be real numbers,
+	and $x' = \infLIM a'_n$ such that $x = x'$. We have
+	$x + y = x' + y$.
+
+	\it{Proof}. We want to show:
+	$$
+	\infLIM (a_n + b_n) = \infLIM (a'_n + b_n)
+	$$
+	Thus we need to show that for all $\vep > 0$ there exists
+	an $N$ such that $|(a_n + b_n) - (a'_n + b_n)| < \vep$.
+	We simplify this as: 
+	$$
+	|a_n - a'_n|
+	$$
+	We now that $x = x'$ and thus $a_n$ and $a'_n$ are 
+	eventually $\vep$-close, which concludes the proof.
+	\hfill $\blacksquare$
+\end{lemma}
+
+\begin{remark}
+	This verifies the axiom of substitution for $x$ on
+	$x + y$. Proving for $y$ is simply as we can quickly
+	show that addition of reals is commutative.
+\end{remark}
+
+\begin{definition}
+	(Multiplication of reals). Let $x = \infLIM a_n$ and
+	$y = \infLIM b_n$ be real numbers. We define the
+	product as:
+	$$
+	xy := \infLIM (a_n b_n)
+	$$
+\end{definition}
+
+\begin{proposition}
+	(Multiplication is well defined). Let $x = \infLIM a_n$ and	
+	$y = \infLIM b_n$ be real numbers. Let 
+	$x' = \infLIM a'_n$ and $x' =x$. Then we have
+	that $xy$ is a real number and $x'y=xy$.
+
+	\it{Proof}. We leave the proof as an exercise to the reader. 
+	You need to show that the product of Caucy sequences is
+	Cauchy, that is are eventually $\vep$-steady. 
+	That is we want to show:
+	$$
+	|a_i b_i - a_j b_j| < \vep
+	$$
+	For axiom of substitution, we want to show 
+	that $|a_i b_i - a'_i b_i| < \vep$, that 
+	is the sequences are $\vep$ close.
+\end{proposition}
+
+We now embed the rationals in the reals, by equating 
+every rational $q$ with the real number 
+$\infLIM q$, that is the sequence $q, q, q, \dots$.
+This embedding is consistent with our definition of 
+addition and multiplication for the rationals.
+
+This means when you want to add or multiply two
+rationals, you can think of them as rationals 
+or limits of sequences (i.e. reals). It
+is also consistent with our notion of equality.
+We use this to define negation.
+
+\begin{definition}
+	(Negation of a real). We define negation of 
+	a real as:
+	\begin{align*}
+		-x :&= (-1) \times x \\ 
+		    &= \infLIM (-1) \times a_n \\
+		    &= \infLIM a_n \\
+	\end{align*}
+\end{definition}
+
+Since $-1$ is rational and so also real, we already have 
+from above that this product forms a real and obeys
+the axiom of substitution. Note it is also consistent 
+with out negation of rational numbers.
+
+\begin{definition}
+	(Subtraction of reals). Let $x,y$ be real, we have: 
+	$$
+	x - y := x + (-y)
+	$$
+\end{definition}
+
+We can now verify that the real numbers obey all the laws 
+of algebra (except those concerning division, as  we
+have not yet defined division.
+
+\begin{example}
+	Say we want to prove $x(y+z) = xy + xz$ for the reals 
+	(multiplication dsitributes over addition). We have:
+	\begin{align*}
+		xy + xz = \infLIM a_n b_n + \infLIM a_n c_n \\
+		&= \infLIM (a_n b_n + a_n c_n) \\
+		&= \infLIM a_n (b_n + c_n) \\
+		&= x(y+z)
+	\end{align*}
+	which concludes the proof. Note what we did here.
+	We moved into doing algebra on the \it{rational 
+	elements of the sequence in the formal limit,
+	in which we already know the algebra laws hold.}
+
+	The other algebra laws can be proven similarly.
+\end{example}
+
+Finally we need to define reciprocation. This is a little 
+trickier than before though. We may be tempted to have:
+$$
+(\infLIM a_n)^{-1} = \infLIM a_n^{-1}
+$$
+We have two problems:
+\begin{enumerate}
+	\item The section $0.1, 0.01, 0.001, \dots$ becomes 
+		$10, 100, 1000, \dots$ which is no\\ longer 
+		Cauchy (not even bounded). 
+
+		Of course the problem here is that 
+		the sequence $0.1, 0.01, 0.001, \dots$ is equal
+		to $0,0,0, \dots$ and thus by our embedding 
+		of the rels is equal to $0$, and we cannot 
+		divide by $0$.
+
+		So we want to restrict ourselves to non-zero 
+		reals.
+	\item But we still have a problem. A non-zero real 
+		could have 0 as part of its Cauchy sequence, 
+		and so be undefined under reciprocation.
+		For example
+		$$
+		0, 0.9,0.99,0.999, \dots
+		$$
+		is a real number, and infact the rational 1.
+		But it contains $0$ in this form of its 
+		Cauchy sequnece.
+
+		To get around this problem we need to 
+		keep sequences away from $0$.
+\end{enumerate}
+
+\begin{definition}
+	(Sequences bounded away from $0$). A sequence
+	$(a_n)_{n=1}^\infty$ is said to be bounded away
+	iff there exists $\Q \leftin c > 0$ such that 
+	$|a_n| \geq c$ for all $n \geq 1$.
+\end{definition}
+
+We now want to show that every non-zero real number 
+is the formal limit of a Cauchy sequence that is bounded 
+from 0. That is it has some representation that does
+not include $0$ in the sequence.
+
+\begin{lemma}
+	 Let $x$ be a non-zero real number. Then 
+	 $x = \infLIM a_n$ for some Cauchy sequence
+	 $(a_n)_{n=0}^\infty$ that is bounded away from $0$.
+
+	 \it{Proof}. We sketch the proof here. $x$ is
+	 real so $x = \infLIM b_n$ for some Cauchy sequence
+	 $(b_n)_{n=0}^\infty$. We don't know if $b$ is bounded 
+	 from $0$, but we do know that $x \neq 0$. Thus 
+	 $(b_n)_{n=0}^\infty \neq (0)_{n=0}^\infty$. 
+	 Thus there exists a $\vep > 0$ such that 
+	 $(b_n)$ is not eventually $\vep$ close to $0$.
+
+	 Fix this $\vep$. $(b)$ is Cauchy so it is eventually 
+	 $\vep$-steady and also eventually $\vep/2$-steady.
+	 Thus there is an $N \geq 1$ such that:
+	 $$
+	 |b_i - b_j| < \vep/2 \quad \forall i,j \geq N
+	 $$
+	 On the other hand, we cannot have:
+	 $$
+	 |b_i -0| = |b_i| < \vep, \quad \forall i \geq N 
+	 $$
+	 as this would imply that $(b)$ is eventually $\vep$-close to $0$.
+	 Thus we must have:
+	 $$
+	 \exists n_0 \geq N, \quad |b_{n_0}| \geq \vep
+	 $$
+	 Now due to being $\vep$ steady above $N$, we have:
+	 \begin{align*}
+		 |b_{n_0} - b_n| < \vep/2 \quad \forall n \geq N\\ 
+	 \end{align*}
+
+	 We leave the rest of the proof as an exercise to the reader.
+\end{lemma}
+
+Now we have that if $x$ is a non-zero real number, then 
+$x$ is the formal limit of a Caucy sequence that 
+is bounded away from $0$. Now we have this, we can 
+take its reciprocal. 
+
+\begin{lemma}
+	 Suppose  that $(a_n)_{n=1}^\infty$ is a Cauchy sequence 
+	 which is bounded away form zero. Then the sequence 
+	 $(a_n^{-1})_{n=1}^\infty$ is also  Cauchy. 
+
+	 \it{Proof}. We have that $\exists \Q \leftin c > 0$ such 
+	 that $|a_n| \geq c, \forall n \geq 1$. Now
+	 we must show that $(a_n^{-1})$ is eventually 
+	 $\vep$ steady. 
+
+	 Take any $\vep > 0$. We must find an $N \geq 1$ such 
+	 that: 
+	 $$
+	 \forall m,n \geq N \quad |a_n^{-1} - a_m^{-1}| \leq \vep. 
+	 $$
+	 But we have: 
+
+	 \begin{align*}
+		 |a_n^{-1} - a_m^{-1}| &= \left| 
+		 \frac{a_m - a_n}{a_ma_n} \right| \\ 
+		 &\leq \frac{|a_m - a_n|}{c^2}
+	 \end{align*}
+
+	 as we have that $a_m, a_n \geq c$. Note that we
+	 can find an $N$ for which the $|a_m - a_n| \leq c^2 \vep$ 
+	 as $(a_n)$ is Cauchy, and so we are done. 
+	 \hfill $\blacksquare$
+\end{lemma}
+
+From this we can define reciprocation on the reals.
+
+\begin{definition}
+	(Reciprocation on the real numbers). Let $x$ be a 
+	non-zero real number. Let $(a_n)^{\infty}_{n=1}$ be 
+	a Cuchy sequence bounded away from $0$ such 
+	that $x = \infLIM a_n$ (which we know exists from
+	the previous lemma). We define the reciprocal 
+	$x^{-1}$ as: 
+	$$
+	x^{-1} := \infLIM a_n^{-1}	
+	$$
+	Again from the previous lemma we know that 
+	$x^{-1}$ is a real number.
+\end{definition}
+
+We need to check one more thing. What if $x$ is the limit 
+of two cauchy sequences $(a_n)$ and $(b_n)$ such that 
+the reciprocals are difference. If so then 
+the axiom of substitution would be broken by this operation. 
+We prove this in not the case in the following Lemma.
+
+\begin{lemma}
+	 (Reciprocation is well defined). Let $(a_n)$ and 
+	 $(b_n)$ be two Cauchy sequences bounded 
+	 away from $0$ such that:
+	 $$
+	 \infLIM a_n = \infLIM b_n
+	 $$
+	 then we have: 
+	 $$
+	 \infLIM a_n^{-1} = \infLIM b_n^{-1}
+	 $$
+
+	 \it{Proof} Consider the product: 
+	 \begin{align*}
+		 P &:=(\infLIM a_n^{-1}) \times  
+		 (\infLIM a_n) \times (\infLIM b_n^{-1})  \\ 
+		   &= \infLIM a_n^{-1}a_n b_n^{-1} \\ 
+		   &= \infLIM b_n^{-1}
+	 \end{align*}
+	 But as we have $\infLIM a_n = \infLIM b_n$ we 
+	 can write $P$ differently by substituting in the middle 
+	 term:
+	 \begin{align*}
+		 P &:=(\infLIM a_n^{-1}) \times  
+		 (\infLIM b_n) \times (\infLIM b_n^{-1})  \\ 
+		   &= \infLIM a_n^{-1}b_n b_n^{-1} \\ 
+		   &= \infLIM a_n^{-1}
+	 \end{align*}
+	 And thus we have the reciprocals are equal as required.
+	 \hfill $\blacksquare$
+\end{lemma}
+Note from the definition that is is clear $z^{-1}x = 1$ as this 
+will just be the formal limit of the sequence of all $1$s which 
+we identify with the rational number $1 \in \Q$. So 
+we have all of the field axioms apply to the reals also. 
+
+Also note that the reciporcal on reals is consistent 
+with reciprocal on rationas (think about for $q\in\Q$ the reciprocal 
+of the formal limit of the sequence of all $q$).
+
+\begin{definition}
+	(Division on the reals). For $x,y \in \R$ we have:
+	$$
+	x/y := x\times y^{-1}
+	$$
+\end{definition}
+
+Hurray! We now have all of the arithmetic operations 
+on the reals and we can do algebra!
+
+\exercisesline
+
+\it{Exercise 5.3.3}. Let $a,b \in \Q$. Show if $a=b$ 
+iff $\infLIM a = \infLIM b$. This allows us to 
+embed the rationals inside the reals in a well-defined 
+manner. 
+
+\it{Proof} (informal). We proof the right direction 
+first. If $a=b$ then we have: 
+$$
+\infLIM a = (a,a,a, \dots) = (b,b,b \dots) = \infLIM b
+$$
+(Technically to be most formal here we want to say that 
+the two sequences are eventually $\vep$ close but this is
+trivial). 
+
+Now the left direction. Assume that:
+$$
+\infLIM a = \infLIM b 
+$$
+Then for all $\vep > 0$ we have $|a-b| < \vep$. This 
+is only possible if $a = b$ (to prove this formally 
+do a quick proof by contradiction). \hfill $\blacksquare$.
+
+
+
+\subsection{Ordering of the reals}
+
+We know that all rationals are positive negative or zero. 
+We now do the same for the reals. To define positive and 
+negative we will again have to rely on sequences bounded 
+away from $0$.
+
+\begin{definition}
+	Let $(a_n)_{n=1}^\infty$ be a sequence of rationals.
+	We say that this sequence is positively 
+	bounded away from zero iff 
+	we have a positive rational $c > 0$ such
+	that $a_n \geq c$ for all $n\geq 1$.
+	That is the seqeunce is entirely positive.
+
+	The sequence is negatively bounded 
+	away form zero iff we have 
+	a negative rational $-c < 0$ such 
+	that $a_n \leq -c$ for all $n \geq 1$.
+	That is the sequence is entirely negative.
+\end{definition}
+
+Note that any sequence that is positively or 
+negatively bounded away from $0$ is bounded 
+away from $0$ trivially.
+
+\begin{definition}
+	A real number $x$ is positive 
+	iff it can be written 
+	as the limit of a Cauchy sequence
+	that is postively bounded 
+	away from zero. It is 
+	negative iff it can be written 
+	as the limit of a Cauchy seqeunce that 
+	is negatively bounded 
+	away from zero.
+\end{definition}
+
+\begin{proposition}
+	For all reals $x$, one of the following is true:
+	\begin{enumerate}[label=\alph*]
+		\item $x$ is positive.
+		\item $x$ is negative.
+		\item $x$ is zero.
+	\end{enumerate}
+	Additionally, $x$ is negative ii $-x$ is 
+	positive. If $x$ and $y$ are positive, 
+	then so is $x+y$ and $xy$.
+\end{proposition}
+
+Note that if $q$ is positive rational, then $\infLIM q$ 
+is positively bounded from $0$ and so is positive. So 
+this definition preserves our previous notion of 
+positive for the rationals.
+
+
+\begin{definition}
+	(Absolute value) Let $x$ be real. We 
+	define $|x|$ equal to $x$ if $x$ is positive,
+	abd $-x$ if $x$ is negative, and $0$ if 
+	$x$ is zero. 
+\end{definition}
+
+\begin{definition}
+	(Ordering of the real numbers). Let $x$ and $y$ 
+	be real numbers. We say that $x >y$ iff 
+	$x -y $ is positive, and $x< y$ iff 
+	$x -y $ is negative. We also 
+	have $x \geq y$ iff $x > y$ or $x = y$, 
+	and analogously $x \leq y$.
+\end{definition}
+
+Order on the reals is consistent with the order on the
+rationals. We inherit all the normal algebraic properties
+over order, for example that multiplying by a negative 
+number reverses the inequality.
+
+\begin{proposition}
+	If $x$ is positive then $x^{-1}$ is positive.
+	If $y$ is positive and $x > y$ then $x^{-1} < y^{-1}$.
+\end{proposition}
+
+\begin{proposition}
+	(The non-negative reals are closed). Let 
+	$a_1, a_2, \dots$ be a Cuachy sequence of non-negative 
+	rational numbers. Then $\infLIM a_n$ is a
+	non-negative real number.
+
+	\it{Proof} (Informal). Assume towards 
+	contradiction that this is false. 
+	Then the limit is a negative real 
+	numberb So there is $\infLIM b_n = x$ 
+	with $(b_n)$ negatively bounded away from
+	0, so we have $b_n < -c$ for all $b_n$. 
+	We also have $a_n \geq 0$ from the 
+	hypothesis, so $|a_n - b_n| \geq c/2$ 
+	so they will never for $\vep$ close 
+	for all $\vep$, so the sequences 
+	cannot be equal, which is 
+	a contradiction. \hfill $\blacksquare$
+\end{proposition}
+
+\begin{corollary}
+	Let $(a_n)$ and $(b_n$ be Cauchy 
+	such that $a_n \geq b_n$ for all 
+	$n \geq 1$. Then:
+	$$
+	\infLIM a_n \geq \infLIM b_n
+	$$
+	\it{Proof}. Apply the previous 
+	proposition to $a_n - b_n$. 
+	Basically you have all $a_n$ and 
+	$b_n$ are positive, thus we 
+	have that $\infLIM a_n - b_n$ 
+	is non-negative, meaning 
+	that  $\infLIM a_n - \infLIM b_n$ 
+	is non-negative, and thus 
+	by the definition of $\geq$ 
+	on the reals we have: 
+	$$
+	\infLIM a_n \geq \infLIM b_n 
+	$$
+	\hfill $\blacksquare$
+\end{corollary}
+
+Now we define distance 
+$d(x,y) = |x = y|$ as we did for the rationals. 
+
+
+\begin{proposition}
+\label{bounding-of-reals-by-rationals}
+	(Bounding of reals by rationals). Let 
+	$x$ be a positive real. Then there
+	exists anpositive rational 
+	$q \in \Q$ such that 
+	$q \leq x$ and a positive 
+	integer $N\in\Z$ such that $x \leq N$ 
+\end{proposition}
+
+\begin{corollary}
+\label{archimedean-property}
+	(Archimedean property). Let $x$ and $\vep$ 
+	be any positive real numbers. Then 
+	there exists a positive integer 
+	$M$ such that $M\vep > x$.
+\end{corollary}
+
+What this says is that no matter how large $x$ is 
+and how small $\vep$, then if we keep adding 
+$\vep$ to itself we can eventually 
+get bigger than $x$.
+
+\begin{proposition}
+	Given any two real numbers $x < y$ we can find 
+	a rational number $q$ such that $x < q < y$.
+\end{proposition}
+
+We have finished constructing the reals now.
+We have algebraic operations, order, and have 
+embedded the rationals in them. We 
+have not shown that they are more
+usfeul than the rationals however.
+Now we show that they are more useful, 
+because we can do things like take 
+square roots (which remember we could 
+not do with the ratioanl $2$).
+
+\begin{remark}
+	We have not yet adressed the fact 
+	that real numbers can be expressed using the
+	decimal system. For instance the formal 
+	limit: 
+	$$
+	1.4, 1.41, 1.414
+	$$
+	is easiest written as $1.41421$. 
+
+	So far we have really just 
+	used $0$, and the increment 
+	operation to make natural 
+	numbers, then used 
+	these to make integers, 
+	the rationals then reals.
+
+	The basic reason we have not 
+	used decimals is because it is 
+	not essential to mathematics.
+	
+	It is useful for computation. See
+	Section \ref{decimals} for 
+	a treatment of the decimals.
+\end{remark}
+
+
+\subsection{The lest upper bound property}
+
+We now give one of the most basica 
+advantages of the real numbers 
+over the rationals, the notion
+of a least upper bound $\sup(E)$
+for $E \subset \R$.
+
+\begin{definition}
+	(Upper bound). Let $E \subset \R$ and 
+	let $M\in\R$. We say that 
+	$M$ is an upper bound for $E$ 
+	iff $x \leq M$ for all $x\in E$.
+\end{definition}
+
+\begin{example}
+	$\R^+$ does not have an upper bound. 
+	For $\emptyset$, every $M$ 
+	is an upper bound (vacuously 
+	true).
+\end{example}
+
+\begin{definition}
+	(Least upper bound). Consider $E\subset \R$ 
+	again, and $M$ real. We say $M$ is 
+	a least upper bound of $E$ iff:
+	\begin{itemize}
+		\item $M$ is an upper bound for $E$.
+		\item Any other upper bound $M'$ of $E$ 
+			has the property $M' \geq M$.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+	$[0,1]$ has a least upper bound $1$ and 
+	$\emptyset$ has no least upper bound.
+\end{example}
+
+\begin{proposition}
+\label{uniqueness-of-least-upper-bound}
+	(Uniqueness of the least upper bound). Let 
+	$E \subset \R$. Then $E$ can have at most 
+	one least upper bound.
+
+	\it{Proof}. Assume towards contradiction 
+	untrue. So we have $M_1 \neq M_2$ both 
+	real that are least upper bounds. 
+	By definition of least upper bound 
+	we have:
+	$$
+	M_1 \geq M_2 \land M_2 \geq M_1 \implies M_1 = M_2
+	$$
+	which is a contradiction.
+\end{proposition}
+
+Now comes an \bf{important property of the reals}.
+
+\begin{theorem}
+\label{existance-of-least-upper-bound}
+	(existance of least upper bound). Let
+	$E \subset \R$ be non-empty. If
+	$E$ has an upper bound, then 
+	it must have exactly one 
+	least upper bound.
+
+	\it{Proof}. This is a long proof. Consider 
+	$E$. We know it is bounded, so 
+	by Proposition \ref{uniqueness-of-least-upper-bound} 
+	there is \it{at most} 1 least upper bound. 
+	Thus we have to show that there is 
+	\it{at least} 1 least upper bound and we are done.
+
+	Let $x_0 \in E$  be arbitrary (we can select
+	an item as $E$ is non-empty). 
+
+	Let $n\geq 1$. By the Archimedean
+	property (Corollary \ref{archimedean-property}), 
+	we know there exists some integer $K$  such 
+	that $K/n \geq M$, and so $K/n$ is an upper bound.
+	Again by Archimedian property, there exists 
+	integer $L$ such that $L/n < x_0$. As $x_0 \in E$ 
+	we have that $L/n$  is not an upper bound. So:
+	$$
+	K/n \geq L/n \implies K \geq L
+	$$
+	We can now find an integer $m_n$ such 
+	that $L < m_n \leq K$ with the property 
+	that $m_n/n$ is an upper bound for $E$, 
+	but $(m_n - 1)/n$ is not (left to reader). 
+	That $m_n$ is unique (left to reader). 
+	We subscript by $n$ to show that $m$ depends 
+	on $n$. This gives us  a well-defined 
+	(and unique) seequence $m_1, m_2, \dots$ 
+	of integers such that
+	all $m_n/n$ are upper bounds 
+	and $(m_n -1)/n$ are not. 
+
+	Now let $N \geq 1$ be a positive 
+	integer, and let $n, n' \geq N$ be 
+	integers larger than or equal to $N$. 
+	Since $m_n/ n$ is an upper bound for 
+	$E$ and $(m_{n'} - 1)/n'$ is not,
+	we must have $m_n/n \geq m_{n'}/n'$.
+	From this we have: 
+	$$
+	\frac{m_n}{m} - \frac{m_{n'}}{n'} > -\frac{1}{n'} \geq -
+	\frac{1}{N}
+	$$
+	Similarly, we have $m_{n'}/n'$ is an upper 
+	bound and $(m_n - 1)/n$ is not giving us:
+	$$
+	\frac{m_n}{m} - \frac{m_{n'}}{n'} \leq \frac{1}{n} \leq \frac{1}{N}
+	$$
+	Putting these two together we have:
+	$$
+	\left| \frac{m_n}{n} - \frac{m_{n'}}{n'} \right| \leq \frac{1}{N}\quad
+	\forall n,n' \geq N \geq 1
+	$$
+	Thus we have that $(m_n/n)$ is Cauchy! Since $m_n/n$ are rational, 
+	we can define the real number formed by taking the limit of 
+	this sequence:
+	$$
+	S := \infLIM \frac{m_n}{n}
+	$$
+	We also have:
+	\begin{align*}
+		\infLIM \frac{m_n -1}{n} &= \infLIM \frac{m_n}{1} 
+		- \infLIM \frac{1}{n} \\ 
+					 &= S - 0 \tag*{Easy to show$\infLIM
+					 1/n = 0$} \\
+					 &= S
+	\end{align*}
+
+	Now we just need to show that $S$ is the least upper bound 
+	for $E$. Consider any $x \in E$. We know 
+	that $m_n/n$ is an upper bound so we have: 
+	$$
+	x \leq \frac{m_n}{n} \quad \forall n \geq 1
+	$$
+	From this we can conclude that:
+	$$
+	x \leq \infLIM m_n/n = S
+	$$
+	Thus $S$ is indeed an upeer bound for $E$. 
+
+	Now we show it is a least upper bound. Suppose
+	that $y$ is an upper bound for $E$. 
+	As $(m_n - 1)/n$ is no an upper bound we have:
+	$$
+	y \geq (m_n - 1)/n \quad \forall n \geq 1
+	$$
+	From this we can get
+	$$
+	y \geq \infLIM (m_n - 1)/n = S
+	$$
+	So we have that $S$ is less than or equal 
+	to any upper bound of $E$, and thus $S$ 
+	is the least upper bound. \hfill $\blacksquare$
+\end{theorem}
+
+\begin{definition}
+	(Supremum). Let $E \subset \R$ be non-empty 
+	and have some upper bound. We define 
+	$\sup(E)$ to be the least upper bound 
+	of $E$, which is well defined by
+	Theorem \ref{existance-of-least-upper-bound}.
+
+	We introduce two new suymbols. If $E$ is 
+	non-empty and has no upper bound, we 
+	set $\sup(E) = +\infty$. If $E$ is 
+	empty, we set $\sup(E) = -\infty$.
+	(For now these symbols are meaningless. 
+	Later we add them to the reals to form 
+	the extended real numbers).
+\end{definition}
+
+\begin{proposition}
+	There exists a real number $x$ such that	
+	$x^2 = 2$. Thus we have that 
+	certain numbers are real but not rational. 
+
+
+	\it{Proof}. Let:
+	$$
+	E = \{y \in \R : y \geq 0 \land y^2 < 2\}
+	$$
+	$E$ has an upper bound of $2$ and 
+	$E$ is non-empty. By the least 
+	upper bound property, we
+	have a real number:
+	$$
+	x = \sup(E)
+	$$
+	which is the least upper bound of $E$. 
+	Note that $x$ is positive trivially.
+	We now show that $x^2 = 2$.
+
+	Assume towards contradiction that this
+	was false. We have two cases: 
+	\begin{itemize}
+		\item Case 1, $x^2 > 2$. Then 
+			we have: 
+			\begin{align*}
+			(x - \vep)^2 &= x^2 - 2x\vep + \vep^2 \\ 
+				     &\geq x^2 - 2x\vep \\ 
+				     &\geq x^2 - 4\vep
+			\end{align*}
+
+		Now we have $x \leq 2$ and $\vep^2 \geq 0$. 
+		Since $x^2 > 2$ from the case, we must 
+		have there is some $\vep$ such that:
+		$$
+		x^2 - 4\vep > 2 \implies (x - \vep)^2 > 2
+		$$
+		But this gives us: 
+		\begin{align*}
+			\forall y \in E, y^2 &< 2 < (x - \vep)^2 \\ 
+			\implies y &< x - \vep
+		\end{align*}
+		Thus $x - \vep$ is an upper bound so 
+		$x$ is not a least upper bound.
+
+		\item Case 2, $x^2 < 2$. Then 
+			we have: 
+			\begin{align*}
+			(x + \vep)^2 &= x^2 + 2x\vep + \vep^2 \\ 
+				     &\leq x^2  + 4 \vep + \vep  \\ 
+				     &= x^2 + 5 \vep 
+			\end{align*}
+			as $x \leq 2$ and $\vep^2 \leq \vep$. 
+			As $x^2 < 2$ we can choose $\vep$ such 
+			that: 
+			$$
+			x^2 + 5\vep < 2 \implies (x + \vep)^2 < 2
+			$$
+			But this means that $x + \vep \in E$, but 
+			this contradicts that $x$ is an upper bound
+			of $E$.
+	\end{itemize}
+\end{proposition}
+
+In the next section we will use the concept of least upper
+bounds to develop the thoery of limits. Note 
+as well as least upper bound, there is also 
+a greatest lower bound, which is $\inf(E)$, 
+and is known as the infimum.
+
+\exercisesline
+
+\it{Exercise 5.5.1} Let $E$ be a subset of 
+the real numbers $\R$ and suppose that 
+$E$ has a least upper bound $M$ which 
+is a real number. Let:
+$$
+-E := \{-x : x \in E\}
+$$
+Show that $-M = \inf(-E)$. 
+
+\it{Proof}. Assume towards contradiction 
+that this was not true. Then we have 
+two options:
+\begin{itemize}
+	\item Case 1. $-M$ is not a lower bound for 
+	$-E$. In this case we have 
+	$\exists -x \in X$ such 
+	that $-x < -M$ and thus $x > M$.
+	As $x \in E$, $M$ would not be 
+	an upper bound for $E$. 
+	\item Case 2. $-M$ is not a greatest 
+		lower bound. So there exists 
+		some $-N > -M$ such that 
+		$-N$ is a lower bound for $-E$.
+		Thus $N$ is an upper bound of $E$ 
+		(trivially) 
+		such that $N < M$, making 
+		$M$ not a least upper bound.
+\end{itemize}
+This concludes the proof. \hfil $\blacksquare$
+
+
+\subsection{Real exponentials, part I}
+
+Previously we have defined $x^n$ for 
+$x \in \Q$ and $n \in \N$, or 
+when $x$ is a non-zero rational and 
+$n$ is an integer. Now that 
+we have all the algebra on the reals 
+we can make a similar definition. 
+
+\begin{definition}
+	(Exponentiation a real with a natural). Let 
+	$x$ be a real number. To raise $x$ to the 
+	power $0$, we define $x^0:=1$. Now 
+	suppose recursively that $x^n$ 
+	has been defined for some
+	natural number $n$, we 
+	define $x^{n+1} := x^n \times x$. 
+\end{definition}
+
+\begin{definition}
+	(Exponentiation of a real by an integer).
+	Let $x$ be a non-zero real number. Then for 
+	any negative integer  $-n$, we 
+	define $x^{-n} := 1/x^n$.
+\end{definition}
+
+\begin{proposition}
+	All of the properties of exponentiation 
+	that we proved for the rationals 
+	(for example Proposition \ref{properties-of-exponentiation}
+	remain valid if $x$ and $y$ are real instead of 
+	rational.
+
+	\it{Proof} (Informal). The previous proofs 
+	of these relied on the algebra on the
+	rationals and laws of order. All of 
+	these hold for the reals, so we
+	can just substitute rational for 
+	real and move the proofs over.
+\end{proposition}
+
+\begin{definition}
+	Let $x \geq 0$ be a non-negative real,
+	and let $n \geq 1$ be a positive 
+	integer. Then:
+	$$
+	x^{1/n} := \sup \{ y \in\R : y \geq 0 \land y^n \leq x \}
+	$$
+\end{definition}
+
+We refrain from defining the $n$th root of negative $x$, to 
+do so we need to define the \it{complex numbers}, which 
+is complex analysis.
+
+\begin{lemma}
+	(Existance of $n$th root). Let $x \geq 0$ be real, 
+	and $n \geq 1$ be a positive integer, then 
+	the set $E:= \{ y \in \R: y \geq 0 \land y^n \leq x\}$
+	is non-empty and is bounded above. Thus 
+	it has a unique supremum and so $x^{1/n}$ is 
+	a real number.
+\end{lemma}
+
+\begin{lemma}
+	(Properties of exponentiation). We ommit most, 
+	they are all easily known from schol and
+	essentialy are done by raising both sides of an 
+	equation to $1/n$. We mention a few here that 
+	are less obvious:
+	\begin{enumerate}[label=(\alph*)]
+		\item $x > y \iff x^{1/n} > y ^{1/n}$
+		\item If $x>1$, then $x^{1/k}$ is 
+			a decreasing function of $k$. If 
+			$x < 1$ then it is an increasing 
+			function. 
+	\end{enumerate}
+\end{lemma}
+
+\begin{definition}
+	Let $x>0$ and let $q$ be a rational number
+	with $q = a/b$ for some integers $a$ and 
+	positive integer $b$. We have:
+	$$
+	x^q := (x^{1/b})^a
+	$$
+\end{definition}
+
+Every rational $q$ can be written in this form, 
+but also for each $q \in \Q$ it can be written 
+in many such forms. Thus we must cehck 
+the definition is well defined.
+
+\begin{lemma}
+	Consider $a/b = a'/b'$ obeying the above
+	properties. Then we have:
+	$$
+	(x^{1/b'})^{a'} = (x^{1/b})^a
+	$$
+\end{lemma}
+
+We ommit some commonly known things about 
+rasing a real to a rational, such as 
+if $x>1$ then $x^q > x^r \iff q > r$, and 
+the converse if $x <1$. 
+
+Eventually we will have to define 
+$x^y$ where $x>0$ and $y$ is 
+a real number, but we cannot 
+do this until we define a limit.
+
+
+\subsection{Subquest into decimals (optional)} 
+\label{decimals}
+
+This is taken from Appendix B of Tao.
+Note that to complete the proofs in this 
+section, which we do not do, you need 
+some more machinery of the reals that 
+we haven't developed yet, in particular 
+notions of convergent sums and 
+the conventional (as opposed to formal) 
+definition of a limit.
+
+We start with defining decimal representations 
+of natural numbers.
+
+\begin{definition}
+	(Digits). A digit is one of $1,2,\dots,9$.
+	We equate these digits with natural numbers 
+	by $0 \equiv 0$, $1 \equiv 0\pp$, etc. 
+	We also define ten as $:= 9\pp$. 
+	We cannot yet ust decimal notation for 
+	ten as that would be circular.
+\end{definition}
+
+\begin{definition}
+	(Positive integer decimals). A positive 
+	integer decimal is a string 
+	$a_na_{n-1}\dots a_0$ of digits, 
+	where $n \geq 0$ is a natural 
+	number an $a_n$ is non zero. 
+	We equate each positive 
+	integer with a decimal using: 
+	$$
+	a_n a_{n-1} \dots a_0 \equiv \sum_{i=0}^n a_i \times \mathrm{ten}^i
+	$$
+\end{definition}
+
+Note that from this we have:
+$$
+10 = 0 \times \mathrm{ten}^0  + 1 \times \mathrm{ten}^1 = ten = 9\pp
+$$
+and so we can start using $10$.
+
+\begin{theorem}
+	(Uniquness and existance of decimal representation). 
+	Every positive integer $m$ is equal to 
+	exactly one positive integer decimal. 
+
+	\it{Proof}. We prove this using the principle 
+	of strong induction, but leave the proof 
+	as an exercise to the reader.
+\end{theorem}
+
+The decimal given by this theorem is called 
+the \it{decimal representation} of $m$. Once 
+we have this, we can derive how to 
+do addition and multiplication. We can 
+now represent negative integers 
+using $-$ sign. Now we have 
+decimal representations of all integers.
+We also have rationals are ratios 
+of decimals, e.g. $335/113$.
+
+We now move onto the real numbers. We do 
+so by introducing the decimal point.
+
+\begin{definition}
+	(Real decimals). A real decimal is 
+	any sequence of digits, and a decimal
+	point, arranged as:
+	$$
+	\pm a_n \dots a_0.a_{-1}a_{-2}\dots 
+	$$
+	which is finite to the left of the decimal 
+	point, but infinite to the right of 
+	the decimal point. The decimal is 
+	equated to the real number: 
+	$$
+	\pm a_n \dots a_0.a_{-1}a_{-2}\dots  \equiv 
+	\pm 1 \times \sum_{i = -\infty}^n a_i \times 10^i
+	$$
+	This sequence is always convergent (why?).
+\end{definition}
+
+\begin{theorem}
+	(Existance of decimal representations) Every 
+	real number $x$ has at least one 
+	decimal representation:
+	$$
+	x = 
+	\pm a_n \dots a_0.a_{-1}a_{-2}\dots  
+	$$
+
+	\it{Proof}  Surfices to show 
+	for positive $x$, as then we can just
+	put $-$ sign in front, and $0$ is 
+	a simply case. The proof is fairly 
+	long and involved.
+\end{theorem}
+
+Note in the above ``at least.'' It is possible for 
+one real number to have two decimal representations. 
+We have $0.999\dots = 1$ (why?). More precisely, 
+if the real is a terminating decimal, it has 
+two decimal representations, (the $.9$ recuring 
+from the left, and itself if you like), and 
+if not then it has 1. 
+
+
+\newpage 
+\section{Limits of sequences}
+
+
+\subsection{Convergence and limit laws}
+
+We now do the work to replace formal 
+limits $\infLIM$ with actual limits \\
+$\inflim$. We begin by repeating 
+much of the $\vep$-close machinery 
+for sequences of \it{real} numbers 
+as opposed to rationals. This 
+distinction will supercede what we did in the previous 
+chapter. 
+
+\begin{definition}
+	(Distance between reals). For $x,y \in \R$ 
+	we have $d(x,y) := |x-y|$.
+\end{definition}
+
+\begin{definition}
+	($\vep$-close real numbers). Let $\vep > 0$ be 
+	a real number. We say that $x,y \in\R$ are 
+	$\vep$-close iff we have $d(y,x)\leq \vep$.
+\end{definition}
+
+Analogous to before, let $(a_n)_{n=m}^\infty$ be a sequence 
+of real numbers (formally constructed using a function 
+from the naturals to the reals).  
+
+\begin{definition}
+\label{cauchy-sequence-real}
+	(Cauchy sequence of reals). Let $\vep > 0$ 
+	be a real number. A sequence 
+	$(a_n)_{n=N}^\infty$ of real numbers 
+	starting at integer index $N$ is 
+	said to be $\vep$-steady iff $a_j$ 
+	and $a_k$ are $\vep$ close 
+	for every $j,k \geq N$. 
+
+	Let $\vep > 0$ 
+	be a real number. A sequence 
+	$(a_n)_{n=m}^\infty$ of real numbers 
+	starting at integer index $m$ is 
+	said to be eventually $\vep$-steady iff 
+	there exists an $N \geq m$ such 
+	that $(a_n)_{n=N}^\infty$ is 
+	$\vep$-steady. 
+
+	We say that $(a_n)_{n=m}^\infty$ 
+	is a Cauchy squence iff it is 
+	eventually $\vep$-steady 
+	for all $\vep > 0$.
+\end{definition}
+
+These definiitions are consistent with 
+the corresponding ones made for the
+rationals.
+
+\begin{proposition}
+	Let $(a_n)_{n=m}^\infty$  be a sequence
+	of rational numbers. Then it
+	is Cauchy in the rational sense (Definition 
+	\ref{cauchy-sequence-rational}) iff
+	it is Cauchy in the real sense 
+	(Definition \ref{cauchy-sequence-real})
+
+	\it{Proof}. One direction is easy. 
+	Assume that the sequence is Cauchy 
+	in the real sense, so it 
+	is eventually $\vep$-steady for reals,
+	and as the rationals are embedded 
+	in the reals this means that it 
+	is eventually $\vep$-steady for all rationals.
+
+	We now go in the other direction. 
+	Assume that the sequence is eventually 
+	$\vep$ steady for all rational $\vep$. 
+	Consider some positive real $\delta$. 
+	Then we know there is some positive 
+	rational $\vep < \delta$ (by the bounding 
+	of the reals by rationals, Proposition 
+	\ref{bounding-of-reals-by-rationals}).
+	Thus the sequence is eventually 
+	$\delta$-steady.
+\end{proposition}
+
+\begin{remark}
+	From the above, we will no longer care about 
+	the difference between a sequence being
+	Cauchy in the rational or real sense, 
+	as they are equivalent. We can think 
+	of a Cauchy sequence as a unified concept.
+\end{remark}
+
+We now define what it means for a sequence of real 
+number to converge to a limit $L$! 
+
+\begin{definition}
+	(Convergence of sequences). Let $\vep > 0$ 
+	be a real number, and let $L$ be a real 
+	number. 
+
+	A sequence $(a_n)_{n=N}^\infty$ of 
+	real numbers is said to be $\vep$-close 
+	to $L$ iff $a_n$ is $\vep$-close to 
+	$L$  for every $n \geq N$. That is 
+	$|a_n - L| \leq \vep$ for every $n \geq N$. 
+
+	We say that a sequence $(a_n)_{n=m}^\infty$ 
+	is eventually $\vep$-close to $L$ iff 
+	there exsits and $N \geq m$ such that 
+	$(a_n)_{n=N}^\infty$ is $\vep$-close to $L$.
+
+	We say that a sequnece converged to $L$ 
+	iff it is eventually $\vep$-close to $L$ 
+	for every real $\vep > 0$.
+\end{definition}
+
+\begin{definition}
+	Consider:
+	$$
+	0.9, 0.99,0.999, \dots
+	$$
+	It is $0.1$ close to $1$ but not $0.01$-close. 
+	However it is eventually $0.01$-close. In fact
+	it is eventually $\vep$-close to $1$ 
+	for all possible $\vep > 0$ and thus 
+	we have the limit of this sequence is $1$.
+\end{definition}
+
+\begin{proposition}
+	(Uniqueness of limits). Consider a sequence
+	$(a_n)$ starting at $m$, and let $L \neq L'$ 
+	be two distinct real numbers. Then it 
+	is not possible for the sequence to 
+	converge to $L$ and also converge to 
+	$L'$.
+
+	\it{Proof}. Assume towards contradiction
+	that two such different limits. 
+	As $L' \neq L$ we know that 
+	$|L - L'| > 0$.  Let:
+	$$
+	\vep = |L - L'|/3
+	$$
+	As the sequence converges to $L$  and $L'$ 
+	we must that they are eventually $\vep$-close 
+	to both. Now pick an index $n$ large enogh to kick 
+	in both $\vep$-closeness. In this case we have:
+	\begin{align*}
+		|a_n - L| &\leq \vep \\	
+		|a_n - L'| &\leq \vep \\	
+	\implies |a_n - L'| + |a_n - L| &\leq 2\vep \\ 
+	\implies |a_n - L' - a_n + L| &\leq 2\vep = 2|L - L'|/3 
+	\tag*{By the triangle innequality}\\ 
+	\implies |L - L'| &< 2|L - L'|/3
+	\end{align*}  
+
+	This is only possible if $|L - L'| = 0$ 
+	and thus $L = L'$, which is a contradiction. 
+	\hfill $\blacksquare$
+\end{proposition}
+
+\begin{definition}
+	(Limits of sequences) If a sequence $(a_n)_{n=m}^\infty$ converges
+	to some real number $L$, we say that the sequence
+	is convergent and that its limit is $L$. We write
+	$$
+	L = \inflim a_n
+	$$
+	to denote this fact. If the sequence is not converging,
+	we say it is divergent and leave $\inflim a_n$ undefined.
+\end{definition}
+
+\begin{proposition}
+	$\inflim 1/n = 0$. 
+
+	\it{Proof}. We need to show that for each real 
+	$\vep > 0$, the sqeuence is eventually $\vep$-close 
+	to $L$
+\end{proposition}
 
 \end{document}
 
