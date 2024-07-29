@@ -2999,6 +2999,7 @@ Now comes an \bf{important property of the reals}.
 \end{theorem}
 
 \begin{definition}
+\label{supremum-standard}
 	(Supremum). Let $E \subset \R$ be non-empty 
 	and have some upper bound. We define 
 	$\sup(E)$ to be the least upper bound 
@@ -3518,8 +3519,361 @@ number to converge to a limit $L$!
 
 	\it{Proof}. We need to show that for each real 
 	$\vep > 0$, the sqeuence is eventually $\vep$-close 
-	to $L$
+	to $L$.
+
+	Pick some $\vep > 0$. Now let $N > 1/\vep$ (which 
+	we can do because of the Archimedean principle). Then 
+	for $n \geq N$ we have:
+	\begin{align*}
+		|a_n - 0| &= 
+		|a_n| &= |1/n| 
+		&\leq |1/N| 
+		&< |1/(1/\vep)|
+		&= |\vep| 
+		&= \vep
+	\end{align*}
+	\hfill $\blacksquare$
 \end{proposition}
+
+\begin{proposition}
+\label{convergent-implies-cauchy}
+	(Convergent sequences are Cauchy). If 
+	a sequence of real numbers is convergent
+	then it is also Cauchy.
+\end{proposition}
+
+Now we show that formal limits can 
+be superceded by actual limits (remember
+before that formal limits were just 
+a piece of notation that we defined no meaning 
+to). This is the same we did with formal difference
+for the integers and formal division for the rationals.
+
+\begin{proposition}
+	(Formal limits are genuine limits). Suppose
+	that $(a_n)_{n=1}^\infty$ is a Cauchy
+	sequence of rational numbers. Then 
+	$(a_n)_{n=1}^\infty$ converges to 
+	$\infLIM a_n$. That is
+	$$
+	\infLIM a_n = \inflim a_n
+	$$
+\end{proposition}
+
+\begin{definition}
+	(Bounded sequences). A sequence 
+	$(a_n)_{n=m}^\infty$ of real 
+	numbers is bounded by $M \in R$ 
+	iff we have $|a_n| \leq M$ for 
+	all $n \geq m$. 
+
+	We say a sequence is bounded iff it is bounded
+	by some $\R \leftin M > 0$.
+\end{definition}
+
+This definition is consistent with what we said about
+bounded sequences of rationals. We also had 
+a lemma that every Cauchy seqeunce of rational 
+numbers is bounded. We can use the same
+proof to say that every Cauchy seqeuence of real 
+numbers is bounded.  
+
+\begin{proposition}
+\label{cauchy-implies-bounded}
+	Every Cauchy sequence of real numbers is bounded.	
+\end{proposition}
+
+\begin{corollary}
+\label{convergent-implies-bounded}
+	Every convergence sequence of real numbers 
+	is bounded.
+
+	\it{Proof}. By Proposition \ref{convergent-implies-cauchy} 
+	we have that convergent implies the sequence is Cauchy.
+	By Proposition \ref{cauchy-implies-bounded} we have 
+	this implies the seqeunce is bounded.
+\end{corollary}
+
+Taking the contrapositive of the above:
+
+\begin{corollary}
+	Note bounded implies not cauchy implies not convergent	
+\end{corollary}
+
+\begin{example}
+	Take $1,2,3,4,\dots$. This is not bounded
+	so we have that it is not convergent using 
+	the above corollary.
+\end{example}
+
+We did lots of work to define arithmetic and algebra
+on the real numbers. Basically saying what happens 
+when I take the quotient of two formal limits, 
+or the difference etc. All of the algebraic 
+rules we proved there cary over to genuine
+limits as per the following theorem.
+
+\begin{theorem}
+	(Limit laws). Let $(a_n)_{n=m}^\infty$ 
+	and $(b_n)_{n=m}^\infty$ be convergent
+	sequences of real numbers. Let $x,y$ 
+	be the real numbers:
+	$$
+	x := \inflim a_n,\quad y := \inflim b_n
+	$$
+
+	\begin{enumerate}[label=(\alph*)]
+		\item The sequence $(a_n + b_n)_{n=m}^\infty$ 
+			converges to $x + y$. That is:
+			$$
+			\inflim (a_n + b_n) = \inflim a_n + \inflim b_n
+			$$
+		\item $(a_nb_n)$ converges to $xy$, that is:
+			$$
+			\inflim (a_nb_n) = (\inflim a_n) \inflim b_n)
+			$$
+		\item For any real number $c$:
+			$$
+			\inflim (ca_n) = c \inflim a_n
+			$$
+		\item $(a_n - b_n)$ converges to $x-y$, that is:
+			$$
+			\inflim (a_n - b_n) = \inflim a_n - \inflim b_n
+			$$
+		\item Suppose that $y \neq 0$  and that $b_n \neq 0$ 
+			for all $n \geq m$. Then 
+			the sequence $(b_n^{-1})_{n=m}^\infty$
+			converges to $y^{-1}$, that is:
+			$$
+			\inflim b_n^{-1} = \left( \inflim b_n \right)^{-1}
+			$$
+		\item Suppose that $y \neq 0$ and that 
+			$b_n \neq 0$ for all $n \geq m$. 
+			Then the sequence $(a_n/b_m)$ 
+			converges to $x/y$, that is:
+			$$
+			\inflim \frac{a_n}{b_n} = \frac{
+			\inflim a_n}{
+			\inflim b_n}
+			$$
+		\item The sequence $(\max(a_n,b_n))^{\infty}_{n=m}$ 
+			converges to $max(x,y)$, that is:
+			$$
+			\inflim \max(a_n, b_n) = \max\left(
+				\inflim a_n, \inflim b_n
+			\right)
+			$$
+		\item The sequence $(\min(a_n,b_n))^{\infty}_{n=m}$ 
+			converges to $max(x,y)$, that is:
+			$$
+			\inflim \min(a_n, b_n) = \min\left(
+				\inflim a_n, \inflim b_n
+			\right)
+			$$
+	\end{enumerate}
+\end{theorem}
+
+
+\exercisesline
+
+\it{Exercise 6.1.6} Prove that
+$$
+\infLIM a_n = \inflim a_n
+$$
+using the following outline. 
+Let $(a_n)_{n=m}^\infty$ be a Cauchy 
+sequence of rational, and write 
+$L = \infLIM a_n$. We have to show 
+that $(a_n)$ converges to $L$.
+
+Let $\vep > 0$. Assume towards
+contradiction that the sequence is not eventually 
+$\vep$-close  to $L$. Use this 
+and the fact that $(a_n)$ is Cauchy 
+to show that there is an $N \geq m$ such 
+that either $a_n > L + \vep / 2$ for all $n \geq N$,
+or that $a_n < L - \vep / 2$ for all $n\geq N$. Then 
+use Exercise 5.4.8
+
+
+\subsection{The Extended real number system}
+
+It seems like $1,2,4,\dots$ is trying to converge 
+to $+ \infty$ and $-1,-2,-3,\dots$ is trying
+to converge to $- \infty$, whilst 
+$1, -1, 1, -1, 1, \dots$ is not converging
+to anything. We address these points now. 
+
+\begin{definition}
+	(Extended real number system). The 
+	exenteded real number system $\R^*$ 
+	is the real line $\R$ with two 
+	additional elements called 
+	$+ \infty$ and $- \infty$. These 
+	elements are distinct from 
+	each other and also distinct
+	from every real number. 
+	
+	An extended real number $x$ 
+	is called finite iff it is a real 
+	number, and infinite iff it is 
+	equal to $+ \infty$ or $- \infty$.
+
+	(Note that this is different 
+	from the notion of a finite
+	and infinite set which 
+	we introduced using 
+	bijections to the 
+	natural numbers).
+\end{definition}
+
+We have no operations to manipualte
+these new symbols other than 
+equality. We change this now.
+
+\begin{definition}
+	(Negation of extended reals). The 
+	operation of negation $x \mapsto -x$ 
+	on $\R$ extends to $\R^*$ 
+	by defining  $+ \infty \mapsto - \infty$ 
+	and $- \infty \mapsto + \infty$.
+\end{definition}
+
+\begin{definition}
+	(Ordering of the extended reals). 
+	Let $x,y \in \R^*$. We 
+	say $x \leq y$ iff:
+	\begin{enumerate}[label=(\alph*)]
+		\item $x,y \in\R$ and $x \leq y$
+		\item $y = + \infty$
+		\item $x = - \infty$
+	\end{enumerate}
+	(and trivially extend to all other innequalities).
+\end{definition}
+
+\begin{proposition}
+	All the nice properties of order reamin:	
+
+	\begin{enumerate}[label=(\alph*)]
+		\item (Reflexive) $x \leq x$
+		\item (Trichotemy). One of 
+			$x < y, x=y, x > y$ is true.
+		\item (Transitivity)
+		\item (Negation reverses order).
+			$x \leq y \iff -y \leq -x$
+	\end{enumerate}
+\end{proposition}
+
+We do not define other algebraic operations
+on the extended reals because things start to 
+break down if you do. 
+
+\begin{definition}
+\label{supremum-extended}
+	(Supremum of sets of extended reals). 
+	Let $E$ be a subset of $\R^*$. Then 
+	we define $\sup(E)$, or 
+	the least upper bound of $E$, as:
+
+	\begin{enumerate}[label=(\alph*)]
+		\item If $E \subseteq \R$ then 
+			we use Definition 
+			\ref{supremum-standard}.
+		\item If $+\infty  \in E$ then 
+			$\sup(E) = \infty$.
+		\item If $E$ does not 
+			contain $+\infty$ 
+			but does contain 
+			$-\infty$, then 
+			we set $\sup(E):=\sup(E- \{-\infty\}$
+			(which is handled by case (a)).
+	\end{enumerate}
+
+	We also define $\inf(E)$ as: 
+	$$
+	\inf(E) := -\sup(-E),\quad -E = \{-x : x\in E \}
+	$$
+\end{definition}
+
+
+\begin{example}
+	Consider the set:
+	$$
+	E = \{- \infty, -1, -2, -3, -4, \dots \} 
+	$$
+	We have:
+	$$
+	\sup(E) = \sup(E - \{E\}) = -1
+	$$
+	and:
+	$$
+	\inf(E) = - \sup(\{\infty, 1,2,3,4, \dots\}) = - \infty 
+	$$
+\end{example}
+
+\begin{example}
+	We ahve $\sup(\emptyset) = - \infty$, and so 
+	$\inf(\emptyset) = + \infty$. This is the only
+	case where the supremum is less than the infimum.
+\end{example}
+
+\begin{remark}
+	Heres how to imagine the supremum 
+	and infimum. Imagine the real line 
+	with $-\infty$ on the left and $+\infty$ 
+	on the right. For supremum, imagine 
+	a piston moving from $+ \infty$ left 
+	until it hits a set. When it stops 
+	is the supremum. Same for infimum 
+	except the piston moves from 
+	$- \infty$ right. 
+
+	For the empty set, it never runs 
+	into a set so both pistons travel 
+	through each other, making 
+	the infimum $+ \infty$ and the 
+	supremum $- \infty$.
+\end{remark}
+
+The following theorem justifies the terminology 
+``least upper bound'' and ``greatest lower bound.''
+
+\begin{theorem}
+	Let $E \subseteq \R^*$. The the following 
+	statements are true.
+	\begin{enumerate}[label=(\alph*)]
+		\item For every $x \in E$ 
+			we have $x \leq \sup(E)$ 
+			and $x \geq \inf(E)$
+		\item Suppose that $M \in \R^*$ is 
+			an upper bound for $E$ 
+			(that is $\forall x \in E, x \leq M$) 
+			then we have that $\sup(E) \leq M$. 
+		\item Suppose that $M \in \R^*$ is a lower 
+			bound for $E$ 
+			(that is $\forall x \in E, x \geq M$) 
+			then we have that $\inf(E) \geq M$.
+	\end{enumerate}
+
+	\it{Proof} (sketch). This is a very simple proof. 
+	You get most of it for free simply from 
+	the original definition of supremum 
+	on the reals (Definition \ref{supremum-standard}),
+	you just need to handle the cases of 
+	$+ \infty$ and $- \infty$ being in $E$.
+\end{theorem}
+
+
+\subsection{Suprema and Infima of sequences} 
+
+We have Suprema and Infima defined for sets of reals, 
+we can now define them for sequnces. 
+
+\begin{definition}
+	(Supremum and Infima of sequences). Let 
+	$(a_n)$
+\end{definition}
+
 
 \end{document}
 
