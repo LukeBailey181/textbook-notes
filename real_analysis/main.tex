@@ -3871,8 +3871,391 @@ we can now define them for sequnces.
 
 \begin{definition}
 	(Supremum and Infima of sequences). Let 
-	$(a_n)$
+	$(a_n)_{n=m}^\infty$ be a sequence of real numbers. 
+	Then we define $\sup (a_n)_{n=m}^\infty$ to be 
+	the supremum of the set: 
+	$$
+	\{a_n : n \geq m\}
+	$$
+	and $\inf (a_n)_{n=m}^\infty$ to be
+	the infimum of the set:
+	$$
+	\{a_n : n \geq m\} 
+	$$
+	We somtimes write these as:
+	$$
+	\sup_{n \geq m} a_n, \quad \inf_{n \geq m} a_n
+	$$
 \end{definition}
+
+\begin{example}
+	Consider $\{1,2,3,4,\dots\}$. Then we have: 
+	$$
+	\sup (a_n) = + \infty
+	$$
+	(as by our definition there is no real upper bound).
+\end{example}
+
+If a sequence is bounded by $M$, then all elements 
+are between $-M$ and $M$, so the set has 
+upper bound $M$ and lower bound $-M$. 
+So the sup and inf of bounded sequences 
+are finite.
+
+\begin{proposition}
+	(Lest upper bound property), Let $(a_n)_{n=m}^\infty$	be
+	a sequence of real numbers, and let $x$ be the exteneded 
+	real number $\sup_{n \geq m} a_n$. Then we have 
+	$a_n \leq x$ for all $n \geq m$. 
+
+	Also 
+	whenever $x \in \R^*$ is an upper bound 
+	for $a_n$, we have $x \leq M$. 
+
+	Finally, for every extended real number $y$ for 
+	which $y < x$, there exists at least one 
+	$n \geq m$ such that $y < a_n \leq x$.
+
+	All of this just says that the supremum is 
+	the least upper bound.
+\end{proposition}
+
+\begin{proposition}
+	(Monotone bounded sequences converge). Let
+	$(a_n)_{n=m}^\infty$ be a sequence of real numbers 
+	which has some finite upper bound $M\in\R$, which 
+	is also increasing ($a_{n+1} \geq a_n$). Then 
+	$(a_n)$ is convergent, and in fact:
+	$$
+	\inflim a_n = \sup_{n \geq m} a_n \leq M
+	$$
+	The anogous statement holds for decreasing sequences
+	and infimum.
+\end{proposition}
+
+\begin{proposition}
+	Let $0 < X < 1$. Then we have $\inflim X^n = 0$.
+
+	\it{Proof}. Show sequence is decreasing. So the limit 
+	is the infimum. Now lets use limit laws:
+	
+	\begin{align*}
+		\inflim (x x^n) &= x \inflim x^n \\	
+		\inflim (x^{n+1} &= x L 
+		L &= x L \\
+		L &= 0 
+	\end{align*}
+
+	Note that this depends on the fact that 
+	$\inflim x^{n+1} = \lim_{n=1}^{\infty}x^n$ 
+	(that is the limit shifted by 1). Why do these
+	two have the same limit? Well look at the definition 
+	of limits, if one is eventually $\vep$  close to $L$ 
+	the other is as well.
+\end{proposition}
+
+\subsection{Limsup, Liminf, and limit points}
+
+Consider the sequence:
+$$
+1.1, -1.01, 1.001, -1.0001, \dots
+$$
+In informal terms it is converging to both $1$
+and $-1$. To be precise about this we 
+introduce the notion of a \it{limit point}.
+
+\begin{definition}
+	(Limit point). Let $(a_n)_{n=m}^\infty$ be a sequence
+	of real numbers, let $x$ be a real number, 
+	and let $\vep > 0$ be a real number. 
+	
+	We say that $x$ is $\vep$-adherent to $(a_n)$ 
+	uff there exists and $n \geq m$ such that 
+	$a_n$ is $\vep$-close to $x$. 
+
+	We say that $x$ is continually $\vep$-adherent 
+	to $(a_n)$ iff it is $\vep$-adherent to $(a_n)_{n=N}^\infty$ 
+	for every $N \geq m$. 
+
+	We say that $x$ is a limit point or adherent point 
+	of $(a_n)_{n=m}^\infty$ iff it is continully 
+	$\vep$-adherent to $(a_n)_{n=m}^\infty$ for every $\vep > 0$.
+
+	(Easier definition). Unrwapping this all we have 
+	$x$ is a limit point of $(a_n)_{n=m}^\infty$ iff
+	for every $\vep > 0$ and $N \geq m$ there exists 
+	and $n \geq N$ such  that $|a_n 0 x| \leq \vep$.
+\end{definition}
+
+\begin{remark}
+	Adherent means to stick to. Unrapping what this means, 
+	$x$ is a limit point if I can pick any point in the sequecen 
+	and after that point, the sequence will eventually have an 
+	element that is arbitrarily close to $x$.
+
+	We also only define limit points as finite real numbers. 
+\end{remark}
+
+\begin{example}
+	Consider:
+	$$
+	0.9, 0.99, 0.999, \dots
+	$$
+	0.8 is 0.1 adherent to this, but not 0.1 continually 
+	adherent. 1 is a limit point of this sequence.
+\end{example}
+
+\begin{remark}
+	Limits are a special case of limit points. 
+	A limit $L$ says for each $\vep$, there is 
+	some $N$ such that after the $N$th element, 
+	all elements are $\vep$ close to the limit. 
+	This means that the sequence is $\vep$ adherent
+	to $L$ for all $n \geq N$, making it continually 
+	$\vep$ adherent to $L$.
+\end{remark}
+
+\begin{proposition}
+	(Limits are limit points). If $(a_n)_{n=m}^\infty$
+	converges to a real limit $L$m then $L$ 
+	is a limit point of the sequence, and 
+	moreover, the only limit point of the sequence.  
+
+	\it{Proof} (informal). Basically the argument
+	given in the remark above for the first part.
+
+	To show the second part. Assume towards contradiction 
+	that there is another limit point. Then you can show 
+	that the sequence will not converge.
+\end{proposition}
+
+We will now look at two special cases of limit points, the limit 
+superior and limit inferior. 
+
+\begin{definition}
+	(Limit superior and limit inferior). Suppose that 
+	$(a_n)_{n=m}^\infty$ is a sequence of real numbers.
+	We define the sequence $(a_N^+)_{N=m}^\infty$ by:
+	$$
+	a_N^+ := \sup (a_n)_{n=N}^\infty
+	$$
+	that is $a_N^+$ is the supremum of all the elements 
+	in the sequence from $a_N$ onwards. 
+
+	We define the limit superior of the sequence
+	$(a_n)_{n=m}^\infty$ to be:
+	$$
+	\limsup_{n\to\infty}a_n := \inf (a_N^+)_{N=m}^\infty
+	$$
+	Similarly, we define:
+	$$
+	a_N^- := \inf (a_n)_{n=N}^\infty
+	$$
+	and we define the limit inferior of the sequence
+	$(a_n)_{n=m}^\infty$ to be:
+	$$
+	\liminf_{n\to\infty}a_n := \sup (a_N^-)_{N=m}^\infty
+	$$
+\end{definition}
+
+\begin{remark}
+	When confronted with this definition, one might ask what
+	the hell is going on? Two ways to better understand it:
+
+	Imagine graphing the sequence, where the $y$ axis 
+	is the value of the sequence, and the $x$ axis is
+	the index of the sequence. The sequence 
+	$a_N^+$ is the maximum of the graph when looking
+	to the right at each point, and the limit superior
+	is the ``minimum'' of this. We can imagine the
+	analogous for the limit inferior. In this 
+	sense the limit superior is something like 
+	``the minimum of the forward looking maximums''.
+
+	Going back to the piston analogy. Imagine 
+	a piston moving from $+\infty$ left until 
+	it is stopped by $a_1, a_2, \dots$. It 
+	will stop at the supremum of the sequence, 
+	which is $a_1^+$. Now remove $a_1$, the piston 
+	might slip left a bit if the supremum changed.
+	Keep doing this. The limit superior is
+	where the piston ends up.
+\end{remark}
+
+\begin{example}
+	Consider:
+	$$
+	1.1, -1.01, 1.001, -1.0001, \dots
+	$$
+	We have $a_1^+, a_2^+, \dots":$
+	$$
+	1.1, 1.001, 1.001, 1.001, \dots	
+	$$
+	So we have $\limsup = 1$. Similarly we have
+	$\liminf = -1$.
+\end{example}
+
+\begin{example}
+	Conisder:
+	$$
+	1, -2, 3, -4, \dots
+	$$
+	Then we have $a_1^+, a_2^+, \dots$:
+	$$
+	+\infty, +\infty, +\infty, +\infty, \dots
+	$$
+	so we have $\limsup = +\infty$. Similarly we have
+	$\liminf = -\infty$.
+\end{example}
+
+\begin{example}
+	Consider:
+	$$
+	1, -1/2, 1/3, -1/4, 1/5, -1/6
+	$$
+	Then we have $a_1^+, a_2^+, \dots$:
+	$$
+	1, 1/3, 1/3, 1/5, 1/5, 1/5, \dots
+	$$
+	so we have $\limsup = 0$. We also 
+	get $\liminf = 0$.
+\end{example}
+
+We now describe some of the basic properites of limit superior
+and limit inferior.
+
+\begin{proposition}
+	Let $(a_n)_{n=m}^\infty$ be a sequence of real numbers. 
+	Let $L^+$ be the limit superior and $L^-$ be the 
+	limit inferior (thus both are extended real 
+	numbers). We have:
+	\begin{enumerate}[label=(\alph*)]
+		\item For every $x > L^+$, there is 
+			an $N \geq m$ such that $a_n < x$ 
+			for all $n \geq N$.
+
+			That is for every $x > L^+$, the elemnts 
+			of the sequence are eventually less than $x$.
+
+			The analogous statement holds for $L^-$.
+		\item For every $x < L^+$, and 
+			every $N \geq m$, there exists 
+			and $n \geq N$ such that $a_n > x$.
+
+			That is for every $x < L^+$, the
+			elements of the sequence 
+			exceed $x$ infinitely often.
+
+			The analogous statement holds for $L^-$.
+		\item We have:
+			$$
+			\inf (a_n)_{n=m}^\infty  \leq L^- \leq L^+
+			\leq \sup (a_n)_{n=m}^\infty 
+			$$
+		\item If $c$ is a limit point of the sequence, 
+			then we have:
+			$$
+			L^- \leq c \leq L^+
+			$$
+			This basically says if the sequnece ``visits''
+			$c$ infinitely often, it must sit between 
+			the min of the maxes and the max of the mins,
+			makes sense!
+		\item If $L^+$ and or $L^-$ are finite, then they 
+			are limit points of the sequence.
+		\item Let $c \in \R$. If the sequence converges
+			to $c$, then we must have:
+			$$
+			L^+ = L^- = c
+			$$
+			Conversely, if $L^+ = L^- = c$, then the
+			sequence converges to $c$.
+
+			This basically says if the sequence is 
+			``calm'' in the limit, and so converges, 
+			then the max of the mins and min of the maxes
+			will be the same. 
+	\end{enumerate}
+
+	\it{Proof}. We prove (a). Suppose $x > L^+$. By the definition 
+	of $L^+$ we have:
+	$$
+	x > \limsup a_n = \inf (a_N^+)_{N=m}^\infty
+	$$
+	So $x$ is bigger than the infimum of the supremum sequence. 
+	This means that means there is some element of the sequence
+	$a_N$ such that:
+	$$
+	\inf (a_N^+)_{N=m}^\infty \leq a_N < x
+	$$
+	as if this wasn't true then $x$ would be the infimum.
+	Now pick this $N$, we have:
+	$$
+	a_N^+ = \sup (a_n)_{n=N}^\infty < x
+	$$
+	Thus we have that all $a_n$ for $n \geq N$ are less than $x$.
+
+\end{proposition}
+
+
+Part (c) and (d) say that if $L^+$ and $L^-$ are finite, then
+they are the smallest and largest limit points, and if 
+they are the same then the sequence converges.
+
+This gives a way to test if a sequence converges. Compute 
+the limit superior and limit inferior, and see if they
+are equal.
+
+\begin{lemma}
+\label{limit-superior-inequality}
+	Suppose that $(a_n)_{n=m}^\infty$ is a sequence of real	
+	numbers and \\ $(b_n)_{n=m}^\infty$ is also 
+	such that $a_n \leq b_n$ for all $n \geq m$. 
+	Then we have:
+	\begin{align*}
+		\sup (a_n)_{n=m}^\infty &\leq \sup (b_n)_{n=m}^\infty \\	
+		\inf (a_n)_{n=m}^\infty &\leq \inf (b_n)_{n=m}^\infty \\ 
+		\limsup_{n\to\infty} a_n &\leq \limsup_{n\to\infty} b_n \\ 
+		\liminf_{n\to\infty} a_n &\leq \liminf_{n\to\infty} b_n
+	\end{align*}
+
+	\it{Proof} (informal). This all sort of makes sense. 
+	The first two are very clear. 
+
+	For the $\limsup$, if $\limsup a_n$ was larger, then 
+	in the limit (informal) there would be some $a_n$ 
+	which achieved a forward looking supremum that 
+	was larger than the corresponding $b_n$, which is
+	impossible. Same for $\liminf$.
+\end{lemma}
+
+\begin{corollary}
+	(Squeeze test). Let $(a_n)_{n=m}^\infty$, $(b_n)_{n=m}^\infty$,
+	and $(c_n)_{n=m}^\infty$ be sequences of real numbers such 
+	that:
+	$$
+	a_n \leq b_n \leq c_n
+	$$
+	for all $n \geq m$. Suppose that $(a_n)$ and $(c_n)$ 
+	both converge to some limit $L$, then $(b_n)$ also
+	converges to $L$.
+
+	\it{Proof}. As $(a_n)$ and $(c_n)$ converges to $L$, we have:
+	$$
+	\limsup a_n = \liminf a_n = \limsup c_n = \liminf c_n = L
+	$$
+	From Lemma \ref{limit-superior-inequality} we have:
+	\begin{align*}
+		\limsup a_n &\leq \limsup b_n \leq \limsup c_n \\	
+		\implies \limsup b_n &= L \\
+		\liminf a_n &\leq \liminf b_n \leq \liminf c_n \\ 
+		\implies \liminf b_n &= L
+	\end{align*}
+	Thus we have that $\limsup b_n = \liminf b_n = L$, and 
+	thus $b_n$ converges to $L$.
+\end{corollary}
+
+
 
 
 \end{document}
